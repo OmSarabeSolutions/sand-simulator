@@ -2,7 +2,7 @@
 
 Documentation technique du simulateur : organisation du code, algorithmes, calcul et rendu Metal,
 concurrence Swift 6, réglages, tests et modèle UML. Pour l'usage et la compilation, voir le
-[README](../README.md).
+[README](../README_fr.md) (version anglaise : [README.md](../README.md)).
 
 ## Vue d'ensemble
 

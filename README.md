@@ -1,108 +1,114 @@
 # TasDeSable
 
-Simulateur de tas de sable pour macOS, en **Swift 6**, **SwiftUI** et **Metal**. La grille est
-rendue en 3D : chaque case est une colonne dont la hauteur et la couleur disent combien de grains
-elle porte.
+*Version française : [README_fr.md](README_fr.md)*
 
-![Ajout aléatoire : grille critique et histogramme des avalanches](docs/images/randomDrop.png)
+A sandpile simulator for macOS, written in **Swift 6**, **SwiftUI** and **Metal**. The grid is
+rendered in 3D: each cell is a column whose height and color show how many grains it holds.
 
-## Le modèle
+![Random drops: critical grid and avalanche histogram](docs/images/en/randomDrop.png)
 
-Sur une grille de 64 × 64 cases, une case qui porte quatre grains ou plus **bascule** et en donne
-un à chacune de ses quatre voisines, qui peuvent basculer à leur tour. Les grains qui sortent par le
-bord sont perdus, donc toute cascade finit par s'arrêter. Dans nos essais, plus d'un ajout sur deux
-ne fait rien (environ 62 %), puis un seul grain fait basculer jusqu'à 3 500 des 4 096 cases.
+## The model
 
-C'est le modèle de Per Bak, Chao Tang et Kurt Wiesenfeld (1987). Avec des bords ouverts et des
-grains ajoutés lentement, la grille se place d'elle-même dans un état où un grain peut déclencher
-une avalanche qui la traverse, ou ne rien faire du tout : la **criticalité auto-organisée**. À Oslo,
-en 1996, du riz à grains allongés a donné des avalanches de toutes les tailles, ce qui n'était plus
-le cas avec du riz moins allongé.
+On a 64 × 64 grid, a cell holding four grains or more **topples** and gives one grain to each of
+its four neighbors, which may topple in turn. Grains that go over the edge are lost, so every
+cascade eventually stops. In our runs, more than half of the drops do nothing (about 62%), and then
+a single grain makes up to 3,500 of the 4,096 cells topple.
 
-Des grains versés au milieu d'une grille vide dessinent des triangles. Sur une grille finie aux
-bords ouverts, avec les mêmes grains aux mêmes endroits, l'ordre des bascules ne change pas ce
-dessin : le modèle est **abélien**. Si l'on partage les grains au lieu de les garder entiers, la
-règle change et les cases pleines forment presque un disque. En 2013, Wesley Pegden et Charles Smart
-ont démontré qu'il existe, pour ce versement central, une forme limite, valable en moyenne par
-petites zones.
+This is the model of Per Bak, Chao Tang and Kurt Wiesenfeld (1987). With open edges and grains
+added slowly, the grid settles by itself into a state where one grain can set off an avalanche that
+sweeps across it, or do nothing at all: **self-organized criticality**. In Oslo, in 1996,
+elongated rice grains produced avalanches of every size, which was no longer the case with less
+elongated rice.
 
-## Les quatre expériences
+Grains poured at the center of an empty grid draw triangles. On a finite grid with open edges, with
+the same grains in the same places, the order of the topplings does not change the picture: the
+model is **abelian**. If the grains are shared instead of kept whole, the rule changes and the full
+cells form almost a disc. In 2013, Wesley Pegden and Charles Smart proved that, for this central
+pour, there is a limit shape, valid on average over small regions.
 
-| Expérience | Ce qu'elle montre | Calcul |
+## The four experiments
+
+| Experiment | What it shows | Computed on |
 |---|---|---|
-| **Ajout aléatoire** | Grains ajoutés un à un au hasard (+1, +100, +10 000 ou en continu). Part des ajouts sans effet, avalanches record, histogramme log-log des tailles. | CPU, exact grain par grain |
-| **Versement central** | N grains posés au centre, motifs fractals. En arrière-plan, les mêmes grains sont versés un par un sur le CPU pour obtenir l'histogramme log-log de leurs avalanches ; la grille obtenue est comparée à celle du GPU. Bouton **Vérifier** : mêmes grains stabilisés en file, en ordre aléatoire et en parallèle, trois résultats identiques case par case. | GPU (Metal compute) et CPU |
-| **Tas divisible** | La masse est partagée au lieu de rester en grains : les cases pleines forment presque le disque d'aire N. | GPU |
-| **Quatre tas** | N, 10 N, 100 N et 1 000 N grains, chacun sur une grille assez grande pour ne rien perdre, affichés dans le même cadre. | GPU |
+| **Random drops** | Grains dropped one at a time at random (+1, +100, +10,000 or continuously). Share of drops without toppling, record avalanches, log-log histogram of their sizes. | CPU, exact grain by grain |
+| **Central pour** | N grains placed at the center, fractal patterns. In the background, the same grains are poured one at a time on the CPU to get the log-log histogram of their avalanches; the resulting grid is compared with the GPU one. **Check** button: the same grains stabilized as a queue, in random order and in parallel, giving three identical grids, cell by cell. | GPU (Metal compute) and CPU |
+| **Divisible sandpile** | The mass is shared instead of staying in whole grains: the full cells almost fill the disc of area N. | GPU |
+| **Four piles** | N, 10 N, 100 N and 1,000 N grains, each on a grid large enough to lose nothing, shown in the same frame. | GPU |
 
-| Versement central | Tas divisible |
+| Central pour | Divisible sandpile |
 |---|---|
-| ![Versement central de 1 000 grains](docs/images/centralPour.png) | ![Tas divisible et cercle d'aire N](docs/images/divisible.png) |
+| ![Central pour with its avalanche histogram](docs/images/en/centralPour.png) | ![Divisible sandpile and the circle of area N](docs/images/en/divisible.png) |
 
-![Quatre tas de 1 000 à 1 000 000 grains](docs/images/comparison.png)
+![Four piles, from 1,000 to 1,000,000 grains](docs/images/en/comparison.png)
 
-## Réglages
+Both histograms are log-log plots of avalanche sizes (number of topplings), with both axes labeled
+in powers of ten (10⁰, 10¹… and 10⁻¹, 10⁻²…). In the critical state the points line up: avalanche
+sizes follow a power law, cut off by the finite size of the grid.
 
-Menu **TasDeSable › Réglages…** (⌘,) ou bouton engrenage de la barre d'outils.
+## Settings
 
-| Réglage | Plage | Défaut | Effet |
+**TasDeSable › Settings…** menu (⌘,) or the gear button in the toolbar.
+
+| Setting | Range | Default | Effect |
 |---|---|---|---|
-| Taille de la grille (largeur × hauteur) | 8 à 1 024 par côté | 512 × 512 | Appliquée avec **Appliquer et réinitialiser** (confirmation si des résultats existent) |
-| Grains par case (seuil T) | 4 à 10 | 4 | Idem |
-| Langue | Français, English | Langue du système (anglais si c'est la première langue, sinon français) | Immédiat, sans relancer l'application |
-| Affichage | Hauteur + couleur, ou couleur seule | Hauteur + couleur | Immédiat ; la couleur seule passe en vue de dessus |
-| Palette | Sable, Classique, Personnalisée | Sable | Immédiat ; la palette personnalisée a 4 sélecteurs de couleur |
-| Grains à déverser | 1 à 10 000 000 | 1 000 000 | Immédiat ; utilisé par le versement central, le tas divisible et les quatre tas |
+| Grid size (width × height) | 8 to 1,024 per side | 512 × 512 | Applied with **Apply and reset** (asks for confirmation if there are results) |
+| Grains per cell (threshold T) | 4 to 10 | 4 | Same |
+| Language | Français, English | System language (English if it comes first, French otherwise) | Immediate, without restarting the app |
+| Display | Height + color, or color only | Height + color | Immediate; color only switches to a top view |
+| Palette | Sand, Classic, Custom | Sand | Immediate; the custom palette has 4 color pickers |
+| Grains to pour | 1 to 10,000,000 | 1,000,000 | Immediate; used by the central pour, the divisible sandpile and the four piles |
 
-**Règle avec un seuil T** : une case qui porte T grains ou plus bascule, perd 4 grains et en donne
-un à chacune de ses quatre voisines. Pour T = 4, c'est le modèle de Bak, Tang et Wiesenfeld ; pour
-T > 4, les cases stables gardent jusqu'à T − 1 grains et le modèle reste abélien. Le minimum de 4
-garantit qu'une bascule ne crée pas de grains.
+**Rule with a threshold T**: a cell holding T grains or more topples, loses 4 grains and gives one
+to each of its four neighbors. For T = 4 this is the Bak–Tang–Wiesenfeld model; for T > 4, stable
+cells keep up to T − 1 grains and the model stays abelian. The minimum of 4 guarantees that a
+toppling never creates grains.
 
-**Palettes** : chacune a quatre couleurs, de 0 grain à 3 grains. Pour un seuil T > 4, les niveaux
-intermédiaires sont des mélanges. Dans le tas divisible, la 1re couleur marque une case vide, un
-mélange de la 1re et de la 2e une case partielle, et la 4e une case pleine.
+**Palettes**: each has four colors, from 0 to 3 grains. For a threshold T > 4, the levels in
+between are blends. In the divisible sandpile, the 1st color marks an empty cell, a blend of the
+1st and 2nd a partly filled cell, and the 4th a full cell.
 
 | Palette | 0 | 1 | 2 | 3 |
 |---|---|---|---|---|
-| Sable | `#2B2722` | `#634731` | `#BB8665` | `#D1B58C` |
-| Classique | `#1A295A` | `#1A8C99` | `#F2C740` | `#D94033` |
-| Personnalisée | au choix | au choix | au choix | au choix |
+| Sand | `#2B2722` | `#634731` | `#BB8665` | `#D1B58C` |
+| Classic | `#1A295A` | `#1A8C99` | `#F2C740` | `#D94033` |
+| Custom | your choice | your choice | your choice | your choice |
 
-**Langue** : tous les textes de l'application sont dans un catalogue de chaînes
-(`TasDeSable/Localizable.xcstrings`). Le français est la langue source, l'anglais la traduction.
-Les nombres suivent la langue choisie : « 1 000 » ou « 1,000 ». Seuls les menus fournis par macOS
-et le titre de la fenêtre de réglages suivent la langue du système.
+**Language**: every text of the app lives in a string catalog
+(`TasDeSable/Localizable.xcstrings`). French is the source language and English the translation.
+Numbers follow the chosen language: "1,000" or "1 000". Only the menus provided by macOS and the
+title of the settings window follow the system language.
 
-![Page de réglages](docs/images/settings.png)
+![Settings](docs/images/en/settings.png)
 
-Dans la vue 3D, **glisser** fait tourner la caméra, la **molette** ou le **pincement** zoome, et le
-**double-clic** revient à la vue par défaut.
+In the 3D view, **drag** to orbit the camera, **scroll** or **pinch** to zoom, and **double-click**
+to return to the default view. Closing the last window quits the app.
 
-## Compiler et lancer
+## Build and run
 
-Prérequis : macOS 15 ou plus récent, Xcode 16 ou plus récent avec la **Metal Toolchain**, et
+Requirements: macOS 15 or later, Xcode 16 or later with the **Metal Toolchain**, and
 [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`).
 
 ```bash
-xcodegen generate                                   # crée TasDeSable.xcodeproj depuis project.yml
-open TasDeSable.xcodeproj                           # puis ⌘R dans Xcode
+xcodegen generate                                   # creates TasDeSable.xcodeproj from project.yml
+open TasDeSable.xcodeproj                           # then ⌘R in Xcode
 ```
 
-En ligne de commande :
+From the command line:
 
 ```bash
-# Si xcode-select pointe sur les Command Line Tools, utiliser Xcode sans rien changer :
+# If xcode-select points to the Command Line Tools, use Xcode without changing anything:
 export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
-xcodebuild -downloadComponent MetalToolchain        # une seule fois, si le compilateur metal manque
+xcodebuild -downloadComponent MetalToolchain        # once, if the metal compiler is missing
 xcodebuild -project TasDeSable.xcodeproj -scheme TasDeSable -derivedDataPath build build
 open build/Build/Products/Debug/TasDeSable.app
 ```
 
-Lancement direct d'une expérience (pratique pour les essais et les captures) :
+Start an experiment directly (handy for testing and screenshots); settings can be overridden the
+same way, for this launch only:
 
 ```bash
 open build/Build/Products/Debug/TasDeSable.app --args -demo comparison   # randomDrop | centralPour | divisible | comparison
+open build/Build/Products/Debug/TasDeSable.app --args -demo randomDrop -grid.width 64 -grid.height 64 -app.language en
 ```
 
 ## Tests
@@ -111,48 +117,48 @@ open build/Build/Products/Debug/TasDeSable.app --args -demo comparison   # rando
 xcodebuild -project TasDeSable.xcodeproj -scheme TasDeSable -derivedDataPath build test
 ```
 
-19 tests (Swift Testing), qui couvrent :
-- la bascule simple et la perte au bord, la conservation des grains, la stabilité ;
-- plus d'un ajout sur deux sans effet à l'état critique ;
-- l'abélianité : file = pile = aléatoire, CPU = GPU pour 10⁴ et 10⁶ grains, seuil 7, versement
-  grain par grain au centre = versement d'un bloc ;
-- la fusion des statistiques calculées par lots ;
-- les graduations des axes en puissances de 10 ;
-- le tas divisible : masse conservée, disque d'aire N ;
-- la dimension des grilles de comparaison ;
-- les réglages : valeurs par défaut, bornes, persistance de la langue et de la palette ;
-- la traduction anglaise ;
-- les palettes : 4 niveaux = 4 couleurs, conversion hexadécimale.
+19 tests (Swift Testing), covering:
+- a single toppling and loss at the edge, conservation of grains, stability;
+- more than half of the drops doing nothing in the critical state;
+- the abelian property: queue = stack = random order, CPU = GPU for 10⁴ and 10⁶ grains, threshold
+  7, grain-by-grain pour at the center = pouring all at once;
+- merging statistics computed in batches;
+- axis labels in powers of ten;
+- the divisible sandpile: mass conserved, disc of area N;
+- the size of the comparison grids;
+- settings: defaults, bounds, persistence of language and palette;
+- the English translation;
+- palettes: 4 levels = 4 colors, hexadecimal conversion.
 
-## Organisation
+## Project layout
 
 ```
-project.yml                 spécification XcodeGen (cible macOS 15, Swift 6, concurrence stricte)
+project.yml                 XcodeGen spec (macOS 15 target, Swift 6, strict concurrency)
 TasDeSable/
-  App/                      point d'entrée SwiftUI
-  Settings/                 AppSettings (UserDefaults) et page de réglages
+  App/                      SwiftUI entry point
+  Settings/                 AppSettings (UserDefaults) and the settings page
   Model/                    Grid, CPUSandpile, GPUSandpile, AvalancheStats, SimulationModel
-  Metal/                    Sandpile.metal (calcul), Render.metal (rendu), SandpileRenderer, MetalView
-  Views/                    fenêtre principale, panneaux, palette
-  Localizable.xcstrings     textes de l'interface (fr source, en)
-TasDeSableTests/            tests Swift Testing
-docs/architecture.md        documentation technique
-docs/uml/                   modèle StarUML (tasdesable.mdj) et images des diagrammes
+  Metal/                    Sandpile.metal (compute), Render.metal (rendering), SandpileRenderer, MetalView
+  Views/                    main window, panels, histogram, palette
+  Localizable.xcstrings     interface texts (French source, English)
+TasDeSableTests/            Swift Testing tests
+docs/architecture.md        technical documentation (in French)
+docs/uml/                   StarUML model (tasdesable.mdj) and diagram images
 ```
 
-La documentation technique, avec les algorithmes, les kernels Metal, la concurrence et le modèle
-UML, est dans [docs/architecture.md](docs/architecture.md).
+The technical documentation (algorithms, Metal kernels, concurrency, UML model) is in
+[docs/architecture.md](docs/architecture.md), in French.
 
 ## Sources
 
-- P. Bak, C. Tang et K. Wiesenfeld, *Self-organized criticality: An explanation of the 1/f noise*,
+- P. Bak, C. Tang and K. Wiesenfeld, *Self-organized criticality: An explanation of the 1/f noise*,
   Phys. Rev. Lett. **59**, 381 (1987).
-- V. Frette, K. Christensen, A. Malthe-Sørenssen, J. Feder, T. Jøssang et P. Meakin,
+- V. Frette, K. Christensen, A. Malthe-Sørenssen, J. Feder, T. Jøssang and P. Meakin,
   *Avalanche dynamics in a pile of rice*, Nature **379**, 49 (1996).
-- W. Pegden et C. K. Smart, *Convergence of the Abelian sandpile*, Duke Math. J. **162**, 627 (2013),
+- W. Pegden and C. K. Smart, *Convergence of the Abelian sandpile*, Duke Math. J. **162**, 627 (2013),
   [arXiv:1105.0111](https://arxiv.org/abs/1105.0111).
-- L. Levine et Y. Peres, *Strong spherical asymptotics for rotor-router aggregation and the divisible
-  sandpile*, [arXiv:0704.0688](https://arxiv.org/abs/0704.0688) ; et L. Levine et Y. Peres,
-  *Laplacian growth, sandpiles, and scaling limits*, Bull. AMS **54**, 355 (2017).
-- L. Levine, W. Pegden et C. K. Smart, *Apollonian structure in the Abelian sandpile*,
+- L. Levine and Y. Peres, *Strong spherical asymptotics for rotor-router aggregation and the
+  divisible sandpile*, [arXiv:0704.0688](https://arxiv.org/abs/0704.0688); and L. Levine and
+  Y. Peres, *Laplacian growth, sandpiles, and scaling limits*, Bull. AMS **54**, 355 (2017).
+- L. Levine, W. Pegden and C. K. Smart, *Apollonian structure in the Abelian sandpile*,
   GAFA **26**, 306 (2016).
