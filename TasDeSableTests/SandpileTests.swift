@@ -60,6 +60,25 @@ struct CPUSandpileTests {
     }
 }
 
+@Suite("Palette")
+struct PaletteTests {
+    @Test("Les 4 niveaux d'un seuil 4 prennent exactement les 4 couleurs")
+    func fourLevels() {
+        let colors: [UInt32] = [0x2B2722, 0x634731, 0x644835, 0xD1B58C]
+        let palette = Palette(colors.map { SIMD3<Float>(hex: $0) })
+        #expect((0..<4).map { palette.grains($0, threshold: 4).hex } == colors)
+        #expect(palette.mass(1).hex == 0xD1B58C)
+        #expect(palette.mass(0).hex == 0x2B2722)
+    }
+
+    @Test("Conversion hexadécimale aller-retour")
+    func hexRoundTrip() {
+        for hex: UInt32 in [0x000000, 0xFFFFFF, 0x1A8C99, 0xD94033] {
+            #expect(SIMD3<Float>(hex: hex).hex == hex)
+        }
+    }
+}
+
 @Suite("Tas sur le GPU")
 struct GPUSandpileTests {
     @Test("Versement central : CPU séquentiel = GPU parallèle", arguments: [10_000, 1_000_000])
@@ -151,6 +170,32 @@ struct AppSettingsTests {
         #expect(reloaded.threshold == 4)
         #expect(reloaded.pourAmount == 1)
         #expect(reloaded.displayMode == .colorOnly)
+    }
+
+    @Test("Langue et palette : valeurs par défaut et persistance")
+    func languageAndPalette() {
+        let defaults = freshDefaults()
+        let settings = AppSettings(defaults: defaults)
+        #expect(settings.palette == .sand)
+        #expect(settings.paletteColors.map(\.hex) == [0x2B2722, 0x634731, 0x644835, 0xD1B58C])
+        settings.language = .en
+        settings.palette = .custom
+        settings.customColors = [0x000000, 0x112233, 0x445566, 0xFFFFFF]
+        settings.save()
+        let reloaded = AppSettings(defaults: defaults)
+        #expect(reloaded.language == .en)
+        #expect(reloaded.palette == .custom)
+        #expect(reloaded.paletteColors.map(\.hex) == [0x000000, 0x112233, 0x445566, 0xFFFFFF])
+        reloaded.palette = .classic
+        #expect(reloaded.paletteColors.map(\.hex) == CellPalette.classicColors)
+    }
+
+    @Test("Textes traduits dans la langue choisie")
+    func localization() {
+        #expect(AppLanguage.en.localized("Tas divisible") == "Divisible sandpile")
+        #expect(AppLanguage.fr.localized("Tas divisible") == "Tas divisible")
+        #expect(AppLanguage.en.localized(SimulationMode.comparison.titleResource) == "Four piles")
+        #expect(AppLanguage.en.localized("\(64) × \(32) · seuil \(4)") == "64 × 32 · threshold 4")
     }
 
     @Test("Quantités des quatre tas")

@@ -49,13 +49,30 @@ Menu **TasDeSable › Réglages…** (⌘,) ou bouton engrenage de la barre d'ou
 |---|---|---|---|
 | Taille de la grille (largeur × hauteur) | 8 à 1 024 par côté | 64 × 64 | Appliquée avec **Appliquer et réinitialiser** (confirmation si des résultats existent) |
 | Grains par case (seuil T) | 4 à 10 | 4 | Idem |
+| Langue | Français, English | Langue du système (anglais si c'est la première langue, sinon français) | Immédiat, sans relancer l'application |
 | Affichage | Hauteur + couleur, ou couleur seule | Hauteur + couleur | Immédiat ; la couleur seule passe en vue de dessus |
+| Palette | Sable, Classique, Personnalisée | Sable | Immédiat ; la palette personnalisée a 4 sélecteurs de couleur |
 | Grains à déverser | 1 à 10 000 000 | 1 000 | Immédiat ; utilisé par le versement central, le tas divisible et les quatre tas |
 
 **Règle avec un seuil T** : une case qui porte T grains ou plus bascule, perd 4 grains et en donne
 un à chacune de ses quatre voisines. Pour T = 4, c'est le modèle de Bak, Tang et Wiesenfeld ; pour
 T > 4, les cases stables gardent jusqu'à T − 1 grains et le modèle reste abélien. Le minimum de 4
 garantit qu'une bascule ne crée pas de grains.
+
+**Palettes** : chacune a quatre couleurs, de 0 grain à 3 grains. Pour un seuil T > 4, les niveaux
+intermédiaires sont des mélanges. Dans le tas divisible, la 1re couleur marque une case vide, un
+mélange de la 1re et de la 2e une case partielle, et la 4e une case pleine.
+
+| Palette | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| Sable | `#2B2722` | `#634731` | `#644835` | `#D1B58C` |
+| Classique | `#1A295A` | `#1A8C99` | `#F2C740` | `#D94033` |
+| Personnalisée | au choix | au choix | au choix | au choix |
+
+**Langue** : tous les textes de l'application sont dans un catalogue de chaînes
+(`TasDeSable/Localizable.xcstrings`). Le français est la langue source, l'anglais la traduction.
+Les nombres suivent la langue choisie : « 1 000 » ou « 1,000 ». Seuls les menus fournis par macOS
+et le titre de la fenêtre de réglages suivent la langue du système.
 
 ![Page de réglages](docs/images/settings.png)
 
@@ -94,10 +111,15 @@ open build/Build/Products/Debug/TasDeSable.app --args -demo comparison   # rando
 xcodebuild -project TasDeSable.xcodeproj -scheme TasDeSable -derivedDataPath build test
 ```
 
-13 tests (Swift Testing) : bascule simple et perte au bord, conservation des grains, stabilité,
-plus d'un ajout sur deux sans effet à l'état critique, abélianité (file = pile = aléatoire, CPU = GPU
-pour 10⁴ et 10⁶ grains, seuil 7), tas divisible (masse conservée, disque d'aire N), dimension des
-grilles de comparaison, réglages (valeurs par défaut, bornes, persistance).
+17 tests (Swift Testing), qui couvrent :
+- la bascule simple et la perte au bord, la conservation des grains, la stabilité ;
+- plus d'un ajout sur deux sans effet à l'état critique ;
+- l'abélianité : file = pile = aléatoire, CPU = GPU pour 10⁴ et 10⁶ grains, seuil 7 ;
+- le tas divisible : masse conservée, disque d'aire N ;
+- la dimension des grilles de comparaison ;
+- les réglages : valeurs par défaut, bornes, persistance de la langue et de la palette ;
+- la traduction anglaise ;
+- les palettes : 4 niveaux = 4 couleurs, conversion hexadécimale.
 
 ## Organisation
 
@@ -109,6 +131,7 @@ TasDeSable/
   Model/                    Grid, CPUSandpile, GPUSandpile, AvalancheStats, SimulationModel
   Metal/                    Sandpile.metal (calcul), Render.metal (rendu), SandpileRenderer, MetalView
   Views/                    fenêtre principale, panneaux, palette
+  Localizable.xcstrings     textes de l'interface (fr source, en)
 TasDeSableTests/            tests Swift Testing
 docs/architecture.md        documentation technique
 docs/uml/                   modèle StarUML (tasdesable.mdj) et images des diagrammes

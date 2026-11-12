@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import SwiftUI
 
 /// Les quatre expériences proposées par l'application.
 enum SimulationMode: String, CaseIterable, Identifiable, Sendable {
@@ -10,7 +11,17 @@ enum SimulationMode: String, CaseIterable, Identifiable, Sendable {
 
     var id: Self { self }
 
-    var title: String {
+    var title: LocalizedStringKey {
+        switch self {
+        case .randomDrop: "Ajout aléatoire"
+        case .centralPour: "Versement central"
+        case .divisible: "Tas divisible"
+        case .comparison: "Quatre tas"
+        }
+    }
+
+    /// Le titre, pour un texte résolu hors des vues (titre de fenêtre).
+    var titleResource: LocalizedStringResource {
         switch self {
         case .randomDrop: "Ajout aléatoire"
         case .centralPour: "Versement central"
@@ -40,7 +51,19 @@ enum SimulationState: Equatable, Sendable {
 
     var isBusy: Bool { self != .idle }
 
-    var label: String {
+    /// L'étiquette, pour un texte résolu hors des vues (sous-titre de fenêtre).
+    var labelResource: LocalizedStringResource {
+        switch self {
+        case .idle: "Stable"
+        case .dropping: "Ajout de grains…"
+        case .pouring: "Versement au centre…"
+        case .verifying: "Vérification abélienne…"
+        case .relaxing: "Partage de la masse…"
+        case .comparing: "Calcul des quatre tas…"
+        }
+    }
+
+    var label: LocalizedStringKey {
         switch self {
         case .idle: "Stable"
         case .dropping: "Ajout de grains…"
@@ -297,7 +320,7 @@ final class SimulationModel {
                 publish()
             } catch is CancellationError {
             } catch {
-                errorMessage = error.localizedDescription
+                errorMessage = message(for: error)
             }
             state = .idle
         }
@@ -338,7 +361,7 @@ final class SimulationModel {
                                               gpuSeconds: gpuSeconds, gpuRounds: rounds)
             } catch is CancellationError {
             } catch {
-                errorMessage = error.localizedDescription
+                errorMessage = message(for: error)
             }
             state = .idle
         }
@@ -366,7 +389,7 @@ final class SimulationModel {
                 publish()
             } catch is CancellationError {
             } catch {
-                errorMessage = error.localizedDescription
+                errorMessage = message(for: error)
             }
             state = .idle
         }
@@ -415,13 +438,21 @@ final class SimulationModel {
                 }
             } catch is CancellationError {
             } catch {
-                errorMessage = error.localizedDescription
+                errorMessage = message(for: error)
             }
             state = .idle
         }
     }
 
     func dismissError() { errorMessage = nil }
+
+    /// Message d'une erreur, dans la langue de l'interface.
+    private func message(for error: any Error) -> String {
+        if let gpuError = error as? GPUSandpileError {
+            return settings.language.localized(gpuError.message)
+        }
+        return error.localizedDescription
+    }
 
     /// Lancement avec `-demo <mode>` (randomDrop, centralPour, divisible, comparison) :
     /// ouvre ce mode et lance son expérience, pour les captures d'écran et les essais.

@@ -7,6 +7,7 @@ struct ComparisonView: View {
 
     var body: some View {
         let amounts = SimulationModel.comparisonAmounts(for: settings.pourAmount)
+        let palette = Palette(settings.paletteColors)
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("Chaque tas est calculé sur une grille assez grande pour qu'aucun grain ne sorte, puis affiché dans le même cadre. Leurs grandes zones se ressemblent.")
@@ -21,7 +22,7 @@ struct ComparisonView: View {
                     .buttonStyle(.borderedProminent)
                     .disabled(model.state.isBusy)
             }
-            PaletteLegend(threshold: model.threshold)
+            PaletteLegend(threshold: model.threshold, palette: palette)
 
             // Les quatre vignettes sont carrées et tiennent ensemble dans l'espace restant.
             GeometryReader { geometry in
@@ -34,7 +35,7 @@ struct ComparisonView: View {
                         GridRow {
                             ForEach(amounts[(row * 2)..<(row * 2 + 2)], id: \.self) { grains in
                                 tile(grains: grains, pile: model.comparison.first { $0.grains == grains },
-                                     side: side)
+                                     side: side, palette: palette)
                             }
                         }
                     }
@@ -45,11 +46,11 @@ struct ComparisonView: View {
         .padding()
     }
 
-    private func tile(grains: Int, pile: ComparisonPile?, side: Double) -> some View {
+    private func tile(grains: Int, pile: ComparisonPile?, side: Double, palette: Palette) -> some View {
         VStack(spacing: 6) {
             ZStack {
                 RoundedRectangle(cornerRadius: 6).fill(.black.opacity(0.85))
-                if let pile, let image = Palette.image(of: pile.grid, threshold: model.threshold) {
+                if let pile, let image = palette.image(of: pile.grid, threshold: model.threshold) {
                     Image(decorative: image, scale: 1)
                         .interpolation(.none)
                         .resizable()
@@ -59,15 +60,15 @@ struct ComparisonView: View {
                 }
             }
             .frame(width: side, height: side)
-            Text(caption(grains: grains, pile: pile))
+            caption(grains: grains, pile: pile)
                 .font(.caption.monospacedDigit())
                 .foregroundStyle(.secondary)
         }
     }
 
-    private func caption(grains: Int, pile: ComparisonPile?) -> String {
-        guard let pile else { return "\(grains.formatted()) grains" }
-        return "\(grains.formatted()) grains · grille \(pile.grid.width) × \(pile.grid.height) · "
-            + pile.seconds.formatted(.number.precision(.fractionLength(2))) + " s"
+    private func caption(grains: Int, pile: ComparisonPile?) -> Text {
+        guard let pile else { return Text("\(grains, format: .number) grains") }
+        return Text("\(grains, format: .number) grains · grille \(pile.grid.width) × \(pile.grid.height) · ")
+            + secondsText(pile.seconds, digits: 2)
     }
 }

@@ -4,6 +4,7 @@ using namespace metal;
 // Même disposition que RenderUniforms dans SandpileRenderer.swift.
 struct RenderUniforms {
     float4x4 viewProjection;
+    float4x4 palette;    // colonnes : les quatre couleurs des cases (rgb)
     uint width;
     uint height;
     uint threshold;
@@ -36,16 +37,12 @@ constant float3 kCorners[6][4] = {
 
 constant uint kTriangle[6] = { 0, 1, 2, 0, 2, 3 };
 
-// Dégradé bleu nuit -> sarcelle -> or -> rouge, pour t dans [0, 1].
+// Dégradé entre les quatre couleurs de la palette, pour t dans [0, 1].
 // Identique à Palette.ramp côté Swift.
-float3 ramp(float t) {
-    const float3 stops[4] = {
-        float3(0.10, 0.16, 0.35), float3(0.10, 0.55, 0.60),
-        float3(0.95, 0.78, 0.25), float3(0.85, 0.25, 0.20)
-    };
+float3 ramp(float4x4 palette, float t) {
     float x = clamp(t, 0.0f, 1.0f) * 3.0f;
     uint i = min(uint(x), 2u);
-    return mix(stops[i], stops[i + 1], x - float(i));
+    return mix(palette[i].rgb, palette[i + 1].rgb, x - float(i));
 }
 
 vertex VertexOut cellVertex(uint vid                         [[vertex_id]],
@@ -64,10 +61,10 @@ vertex VertexOut cellVertex(uint vid                         [[vertex_id]],
                          : value / float(max(u.threshold, 2u) - 1);
     float3 color;
     if (isMass) {
-        color = value >= 0.999f ? float3(0.95, 0.78, 0.25)
-                                : mix(float3(0.08, 0.09, 0.12), float3(0.10, 0.55, 0.60), level);
+        // Tas divisible : 4e couleur si la case est pleine, sinon 1re → 2e selon la masse.
+        color = value >= 0.999f ? u.palette[3].rgb : mix(u.palette[0].rgb, u.palette[1].rgb, level);
     } else {
-        color = ramp(level);
+        color = ramp(u.palette, level);
     }
 
     float columnHeight = showHeight ? 0.08f + level * u.heightScale : 0.08f;

@@ -6,6 +6,8 @@ import simd
 /// Uniformes du rendu (même disposition que `RenderUniforms` dans Render.metal).
 struct RenderUniforms {
     var viewProjection: simd_float4x4
+    /// Colonnes : les quatre couleurs de la palette.
+    var palette: simd_float4x4
     var width: UInt32
     var height: UInt32
     var threshold: UInt32
@@ -87,6 +89,7 @@ final class SandpileRenderer: NSObject, MTKViewDelegate {
     private var valuesBuffer: (any MTLBuffer)?
     private var snapshot: RenderSnapshot?
     private var displayMode: DisplayMode = .heightAndColor
+    private var palette = simd_float4x4(1)
     var camera = OrbitCamera()
 
     init?(device: any MTLDevice, colorFormat: MTLPixelFormat, depthFormat: MTLPixelFormat) {
@@ -110,7 +113,12 @@ final class SandpileRenderer: NSObject, MTKViewDelegate {
     }
 
     /// Reçoit la grille à afficher ; ne recopie les valeurs que si leur version a changé.
-    func update(snapshot newSnapshot: RenderSnapshot, displayMode newMode: DisplayMode) {
+    func update(snapshot newSnapshot: RenderSnapshot, displayMode newMode: DisplayMode,
+                palette colors: [SIMD3<Float>]) {
+        if colors.count == 4 {
+            palette = simd_float4x4(columns: (SIMD4(colors[0], 1), SIMD4(colors[1], 1),
+                                              SIMD4(colors[2], 1), SIMD4(colors[3], 1)))
+        }
         if newMode != displayMode {
             displayMode = newMode
             camera.reset(for: newMode)
@@ -148,6 +156,7 @@ final class SandpileRenderer: NSObject, MTKViewDelegate {
         if snapshot.kind == .mass { flags |= 2 }
         var uniforms = RenderUniforms(
             viewProjection: camera.viewProjection(aspect: aspect, extent: extent),
+            palette: palette,
             width: UInt32(snapshot.width), height: UInt32(snapshot.height),
             threshold: UInt32(snapshot.threshold), flags: flags,
             heightScale: min(max(extent * 0.08, 2), 40),
@@ -157,7 +166,8 @@ final class SandpileRenderer: NSObject, MTKViewDelegate {
         encoder.setDepthStencilState(depthState)
         encoder.setVertexBytes(&uniforms, length: MemoryLayout<RenderUniforms>.stride, index: 0)
         encoder.setVertexBuffer(valuesBuffer, offset: 0, index: 1)
-        encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 36,
+        // En couleur seule, seule la face du dessus est visible : les 6 premiers sommets du cube.
+        encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: displayMode == .colorOnly ? 6 : 36,
                                instanceCount: snapshot.width * snapshot.height)
         encoder.endEncoding()
         commands.present(drawable)

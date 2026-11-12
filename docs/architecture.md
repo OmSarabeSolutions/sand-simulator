@@ -149,9 +149,13 @@ recopie les valeurs dans son `MTLBuffer` partagé que si la version a changé.
   `gap` entre les colonnes (aucune au-delà de 256 cases).
 - **Hauteur** : `0,08 + niveau × heightScale` en mode hauteur + couleur, `0,08` en couleur seule.
   Le niveau vaut `grains / (T − 1)`, ou la masse bornée à 1. `heightScale = clamp(côté × 0,08, 2, 40)`.
-- **Couleur** : `ramp(niveau)`, un dégradé bleu nuit → sarcelle → or → rouge, identique à
-  `Palette.ramp` côté Swift (légende, images de comparaison). Pour le tas divisible : or si plein,
-  sinon un mélange sombre → sarcelle.
+- **Couleur** : `ramp(palette, niveau)`, un dégradé entre les quatre couleurs de la palette choisie,
+  passées en uniforme (`palette`, une `float4x4` dont chaque colonne est une couleur). La fonction
+  est identique à `Palette.ramp` côté Swift (légende, images de comparaison et du tas divisible).
+  Pour le tas divisible : la 4e couleur si la case est pleine, sinon un mélange de la 1re et de la
+  2e selon la masse.
+- **Couleur seule** : seule la face du dessus de chaque cube est dessinée (6 sommets au lieu de
+  36). C'est plus rapide, et les faces latérales très plates ne se chevauchent plus.
 - **Éclairage** : Lambert, `0,35 + 0,65·max(n·l, 0)`. Le test de profondeur `depth32Float` est en
   mode `.less`.
 
@@ -159,8 +163,8 @@ recopie les valeurs dans son `MTLBuffer` partagé que si la version a changé.
 profondeur va de 0 à 1. En couleur seule, la vue par défaut est prise du dessus (tangage 1,56 rad).
 Glisser fait tourner la caméra, la molette ou le pincement zoome, le double-clic réinitialise.
 
-`RenderUniforms` (Swift) et `RenderUniforms` (MSL) ont la même disposition : `float4x4`, puis
-4 `uint`, puis 4 `float`, soit 96 octets. Il en va de même pour `ToppleParams` et `DivisibleParams`.
+`RenderUniforms` (Swift) et `RenderUniforms` (MSL) ont la même disposition : 2 `float4x4` (vue
+et projection, palette), puis 4 `uint`, puis 4 `float`, soit 160 octets. Il en va de même pour `ToppleParams` et `DivisibleParams`.
 
 ![Classes du rendu Metal](uml/images/13_Classes_rendu_Metal.png)
 
@@ -180,14 +184,42 @@ copie de la grille, que le modèle reprend sur le thread principal.
 
 ![États de la simulation](uml/images/30_Etats_simulation.png)
 
+## Langue et palettes
+
+**Langue** :
+- `AppSettings.language` (`AppLanguage` : `fr`, `en`) est appliquée aux deux scènes par
+  `.environment(\.locale, …)`. Toutes les vues SwiftUI (`Text`, `Button`, `Label`, `Picker`,
+  graphiques) traduisent leurs clés et formatent leurs nombres dans cette langue, sans relancer
+  l'application.
+- Les nombres affichés passent par `Text(n, format: .number)` ou par une interpolation
+  `\(n, format: .number)`, qui suivent `\.locale`. Les champs de saisie reçoivent
+  `.number.locale(…)`.
+- Ce qui n'est pas rendu par une vue est résolu avec `AppLanguage.localized(_:)`, un
+  `LocalizedStringResource` dont la `locale` est fixée : le titre et le sous-titre de la fenêtre (la
+  barre de titre ne suit pas `\.locale`) et les messages d'erreur (`GPUSandpileError.message`).
+- Les textes sont dans `TasDeSable/Localizable.xcstrings`, avec le français comme langue source
+  (les clés sont les textes français) et l'anglais comme traduction. Pour ajouter un texte, il suffit
+  de l'écrire en français dans le code. Xcode l'ajoute au catalogue à la compilation, et il reste à
+  le traduire. Les pluriels courts sont choisis dans le code (`cellsText`, `topplesText`).
+
+**Palettes** :
+- `CellPalette` propose `sand` (Sable : `#2B2722`, `#634731`, `#644835`, `#D1B58C`), `classic`
+  (Classique : les couleurs d'origine) et `custom`.
+- La palette Personnalisée a quatre couleurs `0xRRGGBB`, conservées dans `UserDefaults` et éditées
+  par des `ColorPicker`.
+- `AppSettings.paletteColors` donne les quatre couleurs en `SIMD3<Float>`. `SimulationCanvas` les
+  passe à `MetalView`, et de là au renderer (uniforme `palette`), ainsi qu'à `Palette`, qui produit
+  la légende et les images vues de dessus.
+
 ## Réglages
 
 `AppSettings` lit `UserDefaults` (clés `grid.width`, `grid.height`, `grid.threshold`,
 `display.mode`, `pour.amount`) et borne chaque valeur à sa plage. `SettingsView` édite la taille et
 le seuil dans un brouillon (`@State`). **Appliquer et réinitialiser** les enregistre puis appelle
 `SimulationModel.applyGridSettings()`, qui recrée les grilles et remet les résultats à zéro. Une
-confirmation est demandée si `hasContent`. L'affichage et le nombre de grains s'appliquent tout de
-suite (`onChange` → `save()`).
+confirmation est demandée si `hasContent`. La langue, l'affichage, la palette, les couleurs
+personnalisées et le nombre de grains s'appliquent tout de suite (`onChange` → `save()`). Clés
+`UserDefaults` supplémentaires : `app.language`, `display.palette`, `display.customColors`.
 
 ## Tests
 

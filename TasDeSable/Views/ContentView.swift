@@ -14,8 +14,11 @@ struct ContentView: View {
             .navigationSplitViewColumnWidth(min: 170, ideal: 190)
         } detail: {
             detail
-                .navigationTitle(model.mode.title)
-                .navigationSubtitle("\(model.gridWidth) × \(model.gridHeight) · seuil \(model.threshold) · \(model.state.label)")
+                // La barre de titre ne suit pas \.locale : les textes sont résolus dans la langue choisie.
+                .navigationTitle(settings.language.localized(model.mode.titleResource))
+                .navigationSubtitle(settings.language.localized(
+                    "\(model.gridWidth) × \(model.gridHeight) · seuil \(model.threshold)")
+                    + " · " + settings.language.localized(model.state.labelResource))
                 .toolbar {
                     ToolbarItem {
                         SettingsLink {
@@ -29,7 +32,7 @@ struct ContentView: View {
                                               set: { if !$0 { model.dismissError() } })) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text(model.errorMessage ?? "")
+            Text(verbatim: model.errorMessage ?? "")
         }
     }
 
@@ -72,9 +75,10 @@ struct SimulationCanvas: View {
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            MetalView(snapshot: model.snapshot, displayMode: settings.displayMode)
+            MetalView(snapshot: model.snapshot, displayMode: settings.displayMode,
+                      palette: settings.paletteColors)
             if model.mode != .divisible {
-                PaletteLegend(threshold: model.threshold)
+                PaletteLegend(threshold: model.threshold, palette: Palette(settings.paletteColors))
                     .padding(8)
                     .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
                     .padding(12)
@@ -83,20 +87,38 @@ struct SimulationCanvas: View {
     }
 }
 
-/// Ligne « libellé : valeur » des panneaux.
+/// Ligne « libellé : valeur » des panneaux. La valeur est un `Text`, pour que les nombres
+/// soient formatés selon la langue de l'interface (`Text(n, format: .number)`).
 struct StatRow: View {
-    let title: String
-    let value: String
+    let title: LocalizedStringKey
+    let value: Text
 
-    init(_ title: String, _ value: String) {
+    init(_ title: LocalizedStringKey, _ value: Text) {
         self.title = title
         self.value = value
     }
 
     var body: some View {
-        LabeledContent(title) {
-            Text(value).monospacedDigit()
+        LabeledContent {
+            value.monospacedDigit()
+        } label: {
+            Text(title)
         }
         .font(.callout)
     }
+}
+
+/// « n case » ou « n cases » selon n.
+func cellsText(_ n: Int) -> Text {
+    n == 1 ? Text("\(n, format: .number) case") : Text("\(n, format: .number) cases")
+}
+
+/// « n bascule » ou « n bascules » selon n.
+func topplesText(_ n: Int) -> Text {
+    n == 1 ? Text("\(n, format: .number) bascule") : Text("\(n, format: .number) bascules")
+}
+
+/// Durée en secondes, formatée selon la langue.
+func secondsText(_ seconds: Double, digits: Int = 3) -> Text {
+    Text("\(seconds, format: .number.precision(.fractionLength(digits))) s")
 }

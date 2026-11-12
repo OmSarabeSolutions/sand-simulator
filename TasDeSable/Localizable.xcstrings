@@ -1,0 +1,1245 @@
+{
+  "sourceLanguage" : "fr",
+  "strings" : {
+    "%@ / %@ cases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ / %@ cells"
+          }
+        }
+      }
+    },
+    "%@ bascule" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ topple"
+          }
+        }
+      }
+    },
+    "%@ bascules" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ topples"
+          }
+        }
+      }
+    },
+    "%@ case" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ cell"
+          }
+        }
+      }
+    },
+    "%@ cases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ cells"
+          }
+        }
+      }
+    },
+    "%@ grains" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ grains"
+          }
+        }
+      }
+    },
+    "%@ grains · grille %@ × %@ · " : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ grains · grille %2$@ × %3$@ · "
+          }
+        }
+      }
+    },
+    "%@ grains · grille %lld × %lld · " : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ grains · grid %lld × %lld · "
+          }
+        }
+      }
+    },
+    "%@ s" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ s"
+          }
+        }
+      }
+    },
+    "%lld × %lld · seuil %lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld × %lld · threshold %lld"
+          }
+        }
+      }
+    },
+    "+%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%@"
+          }
+        }
+      }
+    },
+    "À l'état critique, les points s'alignent : la loi de taille est une loi de puissance." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In the critical state the points line up: avalanche sizes follow a power law."
+          }
+        }
+      }
+    },
+    "Affichage" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Display"
+          }
+        }
+      }
+    },
+    "Ajout aléatoire" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Random drops"
+          }
+        }
+      }
+    },
+    "Ajout de grains…" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dropping grains…"
+          }
+        }
+      }
+    },
+    "Ajoutez quelques milliers de grains pour voir l'histogramme." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drop a few thousand grains to see the histogram."
+          }
+        }
+      }
+    },
+    "Ajouts sans bascule" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drops without toppling"
+          }
+        }
+      }
+    },
+    "Allocation d'un tampon GPU impossible." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not allocate a GPU buffer."
+          }
+        }
+      }
+    },
+    "Annuler" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "Appliquer et réinitialiser" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply and reset"
+          }
+        }
+      }
+    },
+    "Arrêter" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
+          }
+        }
+      }
+    },
+    "Aucun GPU compatible Metal." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Metal-capable GPU."
+          }
+        }
+      }
+    },
+    "Bascules" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Topples"
+          }
+        }
+      }
+    },
+    "Bascules (record)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Topples (record)"
+          }
+        }
+      }
+    },
+    "bascules par avalanche" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "topples per avalanche"
+          }
+        }
+      }
+    },
+    "Bibliothèque de shaders Metal introuvable." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metal shader library not found."
+          }
+        }
+      }
+    },
+    "Calcul des quatre tas…" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Computing the four piles…"
+          }
+        }
+      }
+    },
+    "Calculer" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compute"
+          }
+        }
+      }
+    },
+    "Cases" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cells"
+          }
+        }
+      }
+    },
+    "Cases pleines" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full cells"
+          }
+        }
+      }
+    },
+    "Chaque tas est calculé sur une grille assez grande pour qu'aucun grain ne sorte, puis affiché dans le même cadre. Leurs grandes zones se ressemblent." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Each pile is computed on a grid large enough for no grain to fall off, then shown in the same frame. Their large regions look alike."
+          }
+        }
+      }
+    },
+    "Classique" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Classic"
+          }
+        }
+      }
+    },
+    "Configurations différentes" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Different configurations"
+          }
+        }
+      }
+    },
+    "Configurations identiques" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identical configurations"
+          }
+        }
+      }
+    },
+    "Continu" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuous"
+          }
+        }
+      }
+    },
+    "Couleur %lld — niveau %lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color %lld — level %lld"
+          }
+        }
+      }
+    },
+    "Couleur 4 — niveau 3 et plus" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color 4 — level 3 and above"
+          }
+        }
+      }
+    },
+    "Couleur seule" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Color only"
+          }
+        }
+      }
+    },
+    "Couleurs" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colors"
+          }
+        }
+      }
+    },
+    "Couleurs de 0 à %@ grains" : {
+
+    },
+    "Couleurs de 0 à %lld grains" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colors from 0 to %lld grains"
+          }
+        }
+      }
+    },
+    "CPU (par ordre)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU (per order)"
+          }
+        }
+      }
+    },
+    "Densité moyenne" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mean density"
+          }
+        }
+      }
+    },
+    "Dernière avalanche" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last avalanche"
+          }
+        }
+      }
+    },
+    "Durée GPU" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPU time"
+          }
+        }
+      }
+    },
+    "Échec d'une commande GPU : %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A GPU command failed: %@"
+          }
+        }
+      }
+    },
+    "Erreur" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
+    },
+    "File = aléatoire" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Queue = random"
+          }
+        }
+      }
+    },
+    "File = GPU" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Queue = GPU"
+          }
+        }
+      }
+    },
+    "Fonction Metal « %@ » introuvable." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metal function “%@” not found."
+          }
+        }
+      }
+    },
+    "fréquence" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "frequency"
+          }
+        }
+      }
+    },
+    "Fréquence" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frequency"
+          }
+        }
+      }
+    },
+    "GPU" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPU"
+          }
+        }
+      }
+    },
+    "Grains" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grains"
+          }
+        }
+      }
+    },
+    "Grains à déverser" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grains to pour"
+          }
+        }
+      }
+    },
+    "Grains ajoutés" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grains dropped"
+          }
+        }
+      }
+    },
+    "Grains par case" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grains per cell"
+          }
+        }
+      }
+    },
+    "Grains par pas" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grains per step"
+          }
+        }
+      }
+    },
+    "Grains perdus au bord" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grains lost at the edge"
+          }
+        }
+      }
+    },
+    "Grains restants" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grains remaining"
+          }
+        }
+      }
+    },
+    "Grains sur la grille" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grains on the grid"
+          }
+        }
+      }
+    },
+    "Grains versés" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grains poured"
+          }
+        }
+      }
+    },
+    "Grille" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grid"
+          }
+        }
+      }
+    },
+    "Grille actuelle : %@ × %@, seuil %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Grille actuelle : %1$@ × %2$@, seuil %3$@"
+          }
+        }
+      }
+    },
+    "Grille actuelle : %lld × %lld, seuil %lld" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current grid: %lld × %lld, threshold %lld"
+          }
+        }
+      }
+    },
+    "Hauteur" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Height"
+          }
+        }
+      }
+    },
+    "Hauteur + couleur" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Height + color"
+          }
+        }
+      }
+    },
+    "Langue" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
+          }
+        }
+      }
+    },
+    "Langue de l'interface" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interface language"
+          }
+        }
+      }
+    },
+    "Largeur" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Width"
+          }
+        }
+      }
+    },
+    "Les grains et les statistiques en cours seront effacés." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The current grains and statistics will be erased."
+          }
+        }
+      }
+    },
+    "Les grains sont posés sur la case centrale, puis toutes les cases instables basculent en parallèle sur le GPU jusqu'à stabilité." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The grains are placed on the center cell, then every unstable cell topples in parallel on the GPU until the grid is stable."
+          }
+        }
+      }
+    },
+    "Les mêmes grains, sur une grille vide, stabilisés dans trois ordres : file sur le CPU, ordre aléatoire sur le CPU, toutes les cases à la fois sur le GPU." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The same grains, on an empty grid, stabilized in three orders: a queue on the CPU, random order on the CPU, every cell at once on the GPU."
+          }
+        }
+      }
+    },
+    "Les quatre couleurs vont de 0 grain au seuil moins un ; au-delà de 4 grains par case, les niveaux intermédiaires sont des mélanges. Pour le tas divisible : 1re couleur vide, 2e partielle, 4e pleine." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The four colors go from 0 grains to the threshold minus one; above 4 grains per cell, the levels in between are blends. For the divisible sandpile: 1st color empty, 2nd partial, 4th full."
+          }
+        }
+      }
+    },
+    "Masse : %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mass: %@"
+          }
+        }
+      }
+    },
+    "Masse restante" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remaining mass"
+          }
+        }
+      }
+    },
+    "Modifier…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change…"
+          }
+        }
+      }
+    },
+    "non" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "oui" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "yes"
+          }
+        }
+      }
+    },
+    "Palette" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palette"
+          }
+        }
+      }
+    },
+    "Partage de la masse…" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sharing the mass…"
+          }
+        }
+      }
+    },
+    "Partager" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share"
+          }
+        }
+      }
+    },
+    "Partir de la palette Classique" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start from the Classic palette"
+          }
+        }
+      }
+    },
+    "Partir de la palette Sable" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start from the Sand palette"
+          }
+        }
+      }
+    },
+    "Personnalisée" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom"
+          }
+        }
+      }
+    },
+    "Plus grande avalanche" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Largest avalanche"
+          }
+        }
+      }
+    },
+    "Préréglages" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presets"
+          }
+        }
+      }
+    },
+    "Propriété abélienne" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abelian property"
+          }
+        }
+      }
+    },
+    "Quatre tas" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Four piles"
+          }
+        }
+      }
+    },
+    "Rayon du disque d'aire N" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radius of the disc of area N"
+          }
+        }
+      }
+    },
+    "Rayon équivalent" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equivalent radius"
+          }
+        }
+      }
+    },
+    "Réglages" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "Réinitialiser" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
+        }
+      }
+    },
+    "Réinitialiser les grilles ?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset the grids?"
+          }
+        }
+      }
+    },
+    "Rétablir les valeurs par défaut" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore defaults"
+          }
+        }
+      }
+    },
+    "Rondes parallèles" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parallel rounds"
+          }
+        }
+      }
+    },
+    "Sable" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sand"
+          }
+        }
+      }
+    },
+    "Stable" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stable"
+          }
+        }
+      }
+    },
+    "Tailles des avalanches (log-log)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avalanche sizes (log-log)"
+          }
+        }
+      }
+    },
+    "Tas de sable" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sandpile"
+          }
+        }
+      }
+    },
+    "Tas divisible" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Divisible sandpile"
+          }
+        }
+      }
+    },
+    "Un grain tombe sur une case tirée au hasard. Une case qui atteint le seuil bascule et en donne un à chacune de ses voisines ; ceux qui sortent par le bord sont perdus." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A grain falls on a cell drawn at random. A cell that reaches the threshold topples and gives one grain to each of its neighbors; grains that go over the edge are lost."
+          }
+        }
+      }
+    },
+    "Une case qui porte %@ grains ou plus bascule : elle en perd 4 et en donne un à chacune de ses quatre voisines. Les cases stables gardent de 0 à %@ grains." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Une case qui porte %1$@ grains ou plus bascule : elle en perd 4 et en donne un à chacune de ses quatre voisines. Les cases stables gardent de 0 à %2$@ grains."
+          }
+        }
+      }
+    },
+    "Une case qui porte %lld grains ou plus bascule : elle en perd 4 et en donne un à chacune de ses quatre voisines. Les cases stables gardent de 0 à %lld grains." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A cell holding %lld grains or more topples: it loses 4 and gives one to each of its four neighbors. Stable cells keep 0 to %lld grains."
+          }
+        }
+      }
+    },
+    "Une masse est posée au centre. Chaque case qui dépasse 1 garde 1 et partage le reste également entre ses quatre voisines. Les cases pleines forment presque un disque." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A mass is placed at the center. Every cell above 1 keeps 1 and shares the rest equally among its four neighbors. The full cells form almost a disc."
+          }
+        }
+      }
+    },
+    "Utilisé par le versement central, le tas divisible et la comparaison des quatre tas (de %@ à %@ grains)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Used by the central pour, the divisible sandpile and the four-pile comparison (from %@ to %@ grains)."
+          }
+        }
+      }
+    },
+    "Vérification abélienne…" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abelian check…"
+          }
+        }
+      }
+    },
+    "Vérifier" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check"
+          }
+        }
+      }
+    },
+    "Versement" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pouring"
+          }
+        }
+      }
+    },
+    "Versement au centre…" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pouring at the center…"
+          }
+        }
+      }
+    },
+    "Versement central" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Central pour"
+          }
+        }
+      }
+    },
+    "Verser au centre" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour at the center"
+          }
+        }
+      }
+    },
+    "Vider" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear"
+          }
+        }
+      }
+    },
+    "Vider la grille" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear the grid"
+          }
+        }
+      }
+    },
+    "Vue de dessus, avec le cercle d'aire N" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Top view, with the circle of area N"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -82,8 +82,9 @@ MANUAL_RELATIONS = []
 #     'doc': 'ce que montre le diagramme', 'members': True, 'rankdir': 'TB' | 'LR'}
 CLASS_DIAGRAMS = [
     {'name': '10 · Classes — réglages et application', 'package': 'Settings',
-     'classes': ['TasDeSableApp', 'AppSettings', 'DisplayMode', 'SettingsView'],
-     'doc': 'Les réglages persistés, leur page et l’application qui les partage avec le modèle.',
+     'classes': ['TasDeSableApp', 'AppSettings', 'DisplayMode', 'AppLanguage', 'CellPalette', 'SettingsView'],
+     'doc': 'Les réglages persistés (taille, seuil, affichage, langue, palette), leur page et l’application '
+            'qui les partage avec le modèle.',
      'members': True, 'rankdir': 'TB'},
     {'name': '11 · Classes — grille et moteurs de bascule', 'package': 'Model',
      'classes': ['Grid', 'SandpileEngine', 'CPUSandpile', 'GPUSandpile', 'ToppleOrder', 'ToppleScratch',
@@ -103,7 +104,7 @@ CLASS_DIAGRAMS = [
      'members': True, 'rankdir': 'TB'},
     {'name': '14 · Classes — vues SwiftUI', 'package': 'Views',
      'classes': ['ContentView', 'SimulationCanvas', 'RandomDropPanel', 'CentralPourPanel', 'DivisiblePanel',
-                 'DiscOverlay', 'ComparisonView', 'StatRow', 'Palette', 'PaletteLegend'],
+                 'DiscOverlay', 'ComparisonView', 'StatRow', 'Palette', 'PaletteLegend', 'PaletteSwatch'],
      'doc': 'La fenêtre principale, les panneaux des quatre expériences et la palette partagée avec le shader.',
      'members': False, 'rankdir': 'LR'},
 ]

@@ -9,7 +9,8 @@ enum GPUSandpileError: LocalizedError {
     case allocationFailed
     case commandFailed(String)
 
-    var errorDescription: String? {
+    /// Message à traduire dans la langue de l'interface (`AppLanguage.localized`).
+    var message: LocalizedStringResource {
         switch self {
         case .noDevice: "Aucun GPU compatible Metal."
         case .noLibrary: "Bibliothèque de shaders Metal introuvable."
@@ -18,6 +19,8 @@ enum GPUSandpileError: LocalizedError {
         case .commandFailed(let message): "Échec d'une commande GPU : \(message)"
         }
     }
+
+    var errorDescription: String? { String(localized: message) }
 }
 
 /// Paramètres du kernel `topple` (même disposition que `ToppleParams` dans Sandpile.metal).

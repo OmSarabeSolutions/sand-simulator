@@ -132,7 +132,7 @@ SCENARIOS_TASDESABLE = [
      ]},
     {'name': '45 · Séquence — changement de réglages',
      'doc': 'La taille et le seuil sont appliqués d’un coup ; la réinitialisation est confirmée si des résultats '
-            'existent.',
+            'existent. La langue, l’affichage et la palette s’appliquent tout de suite.',
      'lifelines': {'u': ('', 'Utilisateur'), 'v': ('', 'SettingsView'), 's': ('', 'AppSettings'),
                    'm': ('', 'SimulationModel')},
      'steps': [
@@ -144,8 +144,9 @@ SCENARIOS_TASDESABLE = [
          ('call', 'v', 's', 'save()'),
          ('call', 'v', 'm', 'applyGridSettings()'),
          ('self', 'm', 'cancel(), nouvelles grilles, publish()'),
-         ('call', 'u', 'v', 'Couleur seule'),
+         ('call', 'u', 'v', 'Couleur seule, langue, palette'),
          ('call', 'v', 's', 'save()'),
+         ('reply', 's', 'v', 'language.locale, paletteColors : vues et rendu mis à jour aussitôt'),
      ]},
     {'name': '46 · Séquence — rendu d’une image',
      'doc': 'Une image : uniformes, puis 36 sommets × une instance par case.',
@@ -155,6 +156,7 @@ SCENARIOS_TASDESABLE = [
          ('call', 'r', 'c', 'viewProjection(aspect, extent)'),
          ('reply', 'c', 'r', 'float4x4'),
          ('self', 'r', 'RenderUniforms(flags, heightScale, gap)'),
+         ('self', 'r', 'palette : 4 couleurs en colonnes de float4x4'),
          ('async', 'r', 'sh', 'cellVertex(vid, iid, u, values)'),
          ('async', 'r', 'sh', 'cellFragment(in)'),
          ('self', 'r', 'present(drawable), commit()'),

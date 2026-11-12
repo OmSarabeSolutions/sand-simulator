@@ -18,6 +18,7 @@ struct TasDeSableApp: App {
             ContentView()
                 .environment(settings)
                 .environment(model)
+                .environment(\.locale, settings.language.locale)
                 .frame(minWidth: 900, minHeight: 600)
         }
 
@@ -25,6 +26,7 @@ struct TasDeSableApp: App {
             SettingsView()
                 .environment(settings)
                 .environment(model)
+                .environment(\.locale, settings.language.locale)
         }
     }
 }

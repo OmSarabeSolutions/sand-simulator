@@ -23,6 +23,7 @@
 		B942C2229B406E6680D1679A /* SimulationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC21E5D0915600DF7DC4EA2 /* SimulationModel.swift */; };
 		BF198A00CB1F2D99998D523F /* DivisiblePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D6783E4260B0440D0B8267 /* DivisiblePanel.swift */; };
 		C00129552A94EBFA5E1607B9 /* CPUSandpile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF0D0EFA50612596BCB7147 /* CPUSandpile.swift */; };
+		CDF1CFF02F67570C96BFBFFB /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 1A750542600D8EDA30923945 /* Localizable.xcstrings */; };
 		CE8C79F8E5419C953AD1246D /* SandpileRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB257BF602D66F7CD5CCFE5 /* SandpileRenderer.swift */; };
 		D4BB80103D1994A9A62E3383 /* Sandpile.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3ABEFCFE407CE4611DE4CBDB /* Sandpile.metal */; };
 		F5CF3C4BE015DCC48E5F9973 /* AvalancheStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1227ACA3D247EC9904576192 /* AvalancheStats.swift */; };
@@ -40,6 +41,7 @@
 
 /* Begin PBXFileReference section */
 		1227ACA3D247EC9904576192 /* AvalancheStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvalancheStats.swift; sourceTree = "<group>"; };
+		1A750542600D8EDA30923945 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		1BC6C3A5821DD5AABE620287 /* SandpileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandpileTests.swift; sourceTree = "<group>"; };
 		20D6783E4260B0440D0B8267 /* DivisiblePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DivisiblePanel.swift; sourceTree = "<group>"; };
 		26AAC40050181A613F082222 /* CentralPourPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralPourPanel.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 		64F208E576F161E1E53EA615 /* TasDeSable */ = {
 			isa = PBXGroup;
 			children = (
+				1A750542600D8EDA30923945 /* Localizable.xcstrings */,
 				1A9A876E3D4D682F8F9E2685 /* App */,
 				4A2B677ED3598D37D70FB4B5 /* Metal */,
 				5F17620685E58DA4E1C3D532 /* Model */,
@@ -162,6 +165,7 @@
 			buildConfigurationList = 343AA690BFB308225AFA939D /* Build configuration list for PBXNativeTarget "TasDeSable" */;
 			buildPhases = (
 				B806C718C048F00973FEC552 /* Sources */,
+				A8EE0E25473A22DED7229D88 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -201,6 +205,10 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					BB8165BC2CC9954F99C9BBB9 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Manual;
+					};
 					F6AB9DF48533FCD114AB4C6B = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Manual;
@@ -212,6 +220,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				en,
 				fr,
 			);
 			mainGroup = 0D3D63F44BD6A9395554E64C;
@@ -226,6 +235,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A8EE0E25473A22DED7229D88 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDF1CFF02F67570C96BFBFFB /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B806C718C048F00973FEC552 /* Sources */ = {
@@ -276,11 +296,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HX2SNC7864;
 				ENABLE_HARDENED_RUNTIME = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Tas de sable";
@@ -294,7 +311,6 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.TasDeSable;
 				PRODUCT_NAME = TasDeSable;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
@@ -304,11 +320,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HX2SNC7864;
 				ENABLE_HARDENED_RUNTIME = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Tas de sable";
@@ -322,7 +335,6 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.TasDeSable;
 				PRODUCT_NAME = TasDeSable;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};

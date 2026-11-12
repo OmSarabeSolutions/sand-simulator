@@ -15,9 +15,9 @@ struct RandomDropPanel: View {
                 .foregroundStyle(.secondary)
 
             HStack {
-                Button("+1") { model.drop(1) }
-                Button("+100") { model.drop(100) }
-                Button("+10 000") { model.drop(10_000) }
+                Button { model.drop(1) } label: { Text(verbatim: "+1") }
+                Button { model.drop(100) } label: { Text("+\(100, format: .number)") }
+                Button { model.drop(10_000) } label: { Text("+\(10_000, format: .number)") }
             }
             .disabled(model.state.isBusy)
 
@@ -29,9 +29,9 @@ struct RandomDropPanel: View {
                         .disabled(model.state.isBusy)
                 }
                 Picker("Grains par pas", selection: $model.dropsPerTick) {
-                    ForEach(Self.speeds, id: \.self) { Text("\($0)").tag($0) }
+                    ForEach(Self.speeds, id: \.self) { Text($0, format: .number).tag($0) }
                 }
-                .frame(width: 150)
+                .frame(width: 170)
             }
 
             Button("Vider la grille", systemImage: "trash", role: .destructive) { model.resetRandom() }
@@ -40,16 +40,17 @@ struct RandomDropPanel: View {
 
             let stats = model.stats
             let cells = model.gridWidth * model.gridHeight
-            StatRow("Grains ajoutés", stats.drops.formatted())
-            StatRow("Ajouts sans bascule", stats.quietFraction.formatted(.percent.precision(.fractionLength(1))))
+            StatRow("Grains ajoutés", Text(stats.drops, format: .number))
+            StatRow("Ajouts sans bascule", Text(stats.quietFraction, format: .percent.precision(.fractionLength(1))))
             if let last = model.lastAvalanche {
-                StatRow("Dernière avalanche", "\(last.area.formatted()) cases, \(last.topples.formatted()) bascules")
+                StatRow("Dernière avalanche", cellsText(last.area) + Text(verbatim: ", ") + topplesText(last.topples))
             }
-            StatRow("Plus grande avalanche", "\(stats.largestArea.formatted()) / \(cells.formatted()) cases")
-            StatRow("Bascules (record)", stats.largestTopples.formatted())
-            StatRow("Grains perdus au bord", stats.lostGrains.formatted())
-            StatRow("Densité moyenne",
-                    (Double(model.randomGrid.totalGrains) / Double(cells)).formatted(.number.precision(.fractionLength(3))))
+            StatRow("Plus grande avalanche",
+                    Text("\(stats.largestArea, format: .number) / \(cells, format: .number) cases"))
+            StatRow("Bascules (record)", Text(stats.largestTopples, format: .number))
+            StatRow("Grains perdus au bord", Text(stats.lostGrains, format: .number))
+            StatRow("Densité moyenne", Text(Double(model.randomGrid.totalGrains) / Double(cells),
+                                            format: .number.precision(.fractionLength(3))))
 
             Divider()
 

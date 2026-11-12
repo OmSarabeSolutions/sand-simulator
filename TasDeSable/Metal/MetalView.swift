@@ -6,6 +6,8 @@ import SwiftUI
 struct MetalView: NSViewRepresentable {
     let snapshot: RenderSnapshot
     let displayMode: DisplayMode
+    /// Les quatre couleurs de la palette.
+    let palette: [SIMD3<Float>]
 
     /// Garde le renderer en vie aussi longtemps que la vue.
     final class Coordinator {
@@ -24,7 +26,7 @@ struct MetalView: NSViewRepresentable {
            let renderer = SandpileRenderer(device: device, colorFormat: view.colorPixelFormat,
                                            depthFormat: view.depthStencilPixelFormat) {
             renderer.camera.reset(for: displayMode)
-            renderer.update(snapshot: snapshot, displayMode: displayMode)
+            renderer.update(snapshot: snapshot, displayMode: displayMode, palette: palette)
             view.delegate = renderer
             view.renderer = renderer
             context.coordinator.renderer = renderer
@@ -33,7 +35,7 @@ struct MetalView: NSViewRepresentable {
     }
 
     func updateNSView(_ view: OrbitMTKView, context: Context) {
-        context.coordinator.renderer?.update(snapshot: snapshot, displayMode: displayMode)
+        context.coordinator.renderer?.update(snapshot: snapshot, displayMode: displayMode, palette: palette)
     }
 }
 

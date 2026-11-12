@@ -12,7 +12,7 @@ struct CentralPourPanel: View {
                 .foregroundStyle(.secondary)
 
             HStack {
-                Text("\(settings.pourAmount.formatted()) grains")
+                Text("\(settings.pourAmount, format: .number) grains")
                     .font(.headline.monospacedDigit())
                 Spacer()
                 SettingsLink { Text("Modifier…") }
@@ -34,12 +34,12 @@ struct CentralPourPanel: View {
 
             Divider()
 
-            StatRow("Grains versés", model.pouredGrains.formatted())
-            StatRow("Grains sur la grille", model.pourGrid.totalGrains.formatted())
+            StatRow("Grains versés", Text(model.pouredGrains, format: .number))
+            StatRow("Grains sur la grille", Text(model.pourGrid.totalGrains, format: .number))
             StatRow("Grains perdus au bord",
-                    (UInt64(model.pouredGrains) - model.pourGrid.totalGrains).formatted())
+                    Text(UInt64(model.pouredGrains) - model.pourGrid.totalGrains, format: .number))
             if let seconds = model.lastPourSeconds {
-                StatRow("Durée GPU", seconds.formatted(.number.precision(.fractionLength(3))) + " s")
+                StatRow("Durée GPU", secondsText(seconds))
             }
 
             Divider()
@@ -55,13 +55,14 @@ struct CentralPourPanel: View {
                 Label(report.isAbelian ? "Configurations identiques" : "Configurations différentes",
                       systemImage: report.isAbelian ? "checkmark.circle.fill" : "xmark.octagon.fill")
                     .foregroundStyle(report.isAbelian ? .green : .red)
-                StatRow("Grains", report.grains.formatted())
-                StatRow("File = aléatoire", report.queueEqualsRandom ? "oui" : "non")
-                StatRow("File = GPU", report.queueEqualsGPU ? "oui" : "non (\(report.differingCells) cases)")
-                StatRow("Grains restants", report.remaining.formatted())
-                StatRow("CPU (par ordre)", report.cpuSeconds.formatted(.number.precision(.fractionLength(3))) + " s")
-                StatRow("GPU", report.gpuSeconds.formatted(.number.precision(.fractionLength(3))) + " s")
-                StatRow("Rondes parallèles", report.gpuRounds.formatted())
+                StatRow("Grains", Text(report.grains, format: .number))
+                StatRow("File = aléatoire", report.queueEqualsRandom ? Text("oui") : Text("non"))
+                StatRow("File = GPU", report.queueEqualsGPU
+                        ? Text("oui") : Text("non") + Text(verbatim: " (") + cellsText(report.differingCells) + Text(verbatim: ")"))
+                StatRow("Grains restants", Text(report.remaining, format: .number))
+                StatRow("CPU (par ordre)", secondsText(report.cpuSeconds))
+                StatRow("GPU", secondsText(report.gpuSeconds))
+                StatRow("Rondes parallèles", Text(report.gpuRounds, format: .number))
             }
         }
     }

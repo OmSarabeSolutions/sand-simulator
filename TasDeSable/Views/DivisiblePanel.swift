@@ -12,7 +12,7 @@ struct DivisiblePanel: View {
                 .foregroundStyle(.secondary)
 
             HStack {
-                Text("Masse : \(settings.pourAmount.formatted())")
+                Text("Masse : \(settings.pourAmount, format: .number)")
                     .font(.headline.monospacedDigit())
                 Spacer()
                 SettingsLink { Text("Modifier…") }
@@ -31,15 +31,16 @@ struct DivisiblePanel: View {
 
             if let report = model.divisibleReport {
                 Divider()
-                StatRow("Cases pleines", report.fullCells.formatted())
-                StatRow("Rayon équivalent", report.fullRadius.formatted(.number.precision(.fractionLength(2))))
-                StatRow("Rayon du disque d'aire N", report.discRadius.formatted(.number.precision(.fractionLength(2))))
-                StatRow("Masse restante", report.remainingMass.formatted(.number.precision(.fractionLength(1))))
-                StatRow("Durée GPU", report.seconds.formatted(.number.precision(.fractionLength(3))) + " s")
+                StatRow("Cases pleines", Text(report.fullCells, format: .number))
+                StatRow("Rayon équivalent", Text(report.fullRadius, format: .number.precision(.fractionLength(2))))
+                StatRow("Rayon du disque d'aire N",
+                        Text(report.discRadius, format: .number.precision(.fractionLength(2))))
+                StatRow("Masse restante", Text(report.remainingMass, format: .number.precision(.fractionLength(1))))
+                StatRow("Durée GPU", secondsText(report.seconds))
 
                 Text("Vue de dessus, avec le cercle d'aire N").font(.headline)
                 DiscOverlay(masses: model.masses, width: model.gridWidth, height: model.gridHeight,
-                            radius: report.discRadius)
+                            radius: report.discRadius, palette: Palette(settings.paletteColors))
                     .frame(height: 260)
             }
         }
@@ -52,13 +53,14 @@ struct DiscOverlay: View {
     let width: Int
     let height: Int
     let radius: Double
+    let palette: Palette
 
     var body: some View {
         GeometryReader { geometry in
             let scale = min(geometry.size.width / Double(width), geometry.size.height / Double(height))
             let size = CGSize(width: Double(width) * scale, height: Double(height) * scale)
             ZStack {
-                if let image = Palette.image(masses: masses, width: width, height: height) {
+                if let image = palette.image(masses: masses, width: width, height: height) {
                     Image(decorative: image, scale: 1)
                         .interpolation(.none)
                         .resizable()
