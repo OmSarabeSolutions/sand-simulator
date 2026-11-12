@@ -253,14 +253,25 @@ personnalisées et le nombre de grains s'appliquent tout de suite (`onChange` �
 
 ## Tests
 
-`TasDeSableTests/SandpileTests.swift` (Swift Testing). Le paquet de tests est hébergé par
-l'application, qui fournit la bibliothèque Metal par défaut.
+`TasDeSableTests/` (Swift Testing). Le paquet de tests est hébergé par l'application, qui fournit
+la bibliothèque Metal par défaut. Les réglages des tests utilisent `MemorySettingsStore`, pour ne
+jamais lire ni modifier les préférences de l'utilisateur.
 
-| Suite | Tests |
-|---|---|
-| Tas abélien sur le CPU | bascule simple ; coin qui perd 2 grains ; conservation ajoutés = restants + perdus et stabilité ; plus de 50 % d'ajouts sans effet et avalanche de plus de 1 000 cases sur 64 × 64 ; file = pile = aléatoire (T = 4 et 7) |
-| Tas sur le GPU | CPU = GPU pour 10⁴ et 10⁶ grains ; relaxation directe d'une grille quelconque ; seuil 7 ; tas divisible (masse conservée à ±1, cases ≤ 1,001, 900 à 1 000 cases pleines) ; grille de comparaison sans perte pour 10⁵ grains |
-| Réglages | valeurs par défaut ; bornes et relecture ; quantités des quatre tas |
+| Suite | Fichier | Tests |
+|---|---|---|
+| Tas abélien sur le CPU | `SandpileTests.swift` | bascule simple ; coin qui perd 2 grains ; conservation et stabilité ; plus de 50 % d'ajouts sans effet ; versement grain par grain au centre = d'un bloc, statistiques par lots = un lot ; puissances de 10 et décades ; file = pile = aléatoire (T = 4 et 7) |
+| Palette | `SandpileTests.swift` | 4 niveaux = 4 couleurs ; conversion hexadécimale |
+| Tas sur le GPU | `SandpileTests.swift` | CPU = GPU pour 10⁴ et 10⁶ grains ; relaxation directe ; seuil 7 ; tas divisible ; grille de comparaison sans perte |
+| Réglages | `SandpileTests.swift` | valeurs par défaut ; bornes et relecture ; langue et palette ; traduction ; quantités des quatre tas |
+| Modèle de simulation | `SimulationModelTests.swift` | ajout aléatoire et continu ; versement central et calcul grain par grain (identique au GPU), arrêt de ce calcul ; vérification abélienne ; tas divisible ; quatre tas ; réglages appliqués ; `-demo` ; libellés traduits |
+| Vues | `SimulationModelTests.swift` | chaque vue construite dans un `NSHostingView` hors écran, en français et en anglais, vide puis avec des résultats, palette personnalisée et couleur seule |
+
+**Couverture du code** : `scripts/coverage.sh` lance les tests avec `-enableCodeCoverage YES` (le
+schéma de `project.yml` a aussi `gatherCoverageData: true` et `coverageTargets: [TasDeSable]`). Il
+affiche ensuite le rapport de `xcrun xccov` par fichier ; `--json` garde le rapport complet dans
+`build/coverage.json`. Couverture actuelle : 92,5 % des lignes de l'application. Restent non
+couverts : `AppDelegate`, qui quitte l'application quand la dernière fenêtre se ferme, et les gestes
+de souris d'`OrbitMTKView`.
 
 ## Performances mesurées
 

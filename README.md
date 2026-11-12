@@ -117,7 +117,7 @@ open build/Build/Products/Debug/TasDeSable.app --args -demo randomDrop -grid.wid
 xcodebuild -project TasDeSable.xcodeproj -scheme TasDeSable -derivedDataPath build test
 ```
 
-19 tests (Swift Testing), covering:
+30 tests (Swift Testing), covering:
 - a single toppling and loss at the edge, conservation of grains, stability;
 - more than half of the drops doing nothing in the critical state;
 - the abelian property: queue = stack = random order, CPU = GPU for 10⁴ and 10⁶ grains, threshold
@@ -128,7 +128,28 @@ xcodebuild -project TasDeSable.xcodeproj -scheme TasDeSable -derivedDataPath bui
 - the size of the comparison grids;
 - settings: defaults, bounds, persistence of language and palette;
 - the English translation;
-- palettes: 4 levels = 4 colors, hexadecimal conversion.
+- palettes: 4 levels = 4 colors, hexadecimal conversion;
+- the simulation model: every experiment run to completion (drops, continuous drops, central pour
+  and its grain-by-grain computation, stopping that computation, abelian check, divisible sandpile,
+  four piles), applying settings, the `-demo` argument;
+- the views: every screen built in French and in English, empty and then with results.
+
+### Code coverage
+
+```bash
+scripts/coverage.sh            # tests + per-file coverage report
+scripts/coverage.sh --json     # also keeps the full report in build/coverage.json
+```
+
+The script turns coverage on (`-enableCodeCoverage YES`, and `gatherCoverageData` in the
+`project.yml` scheme), runs the tests, then prints the `xccov` report for the app. The raw result,
+`build/coverage.xcresult`, opens in Xcode (*Coverage* tab); coverage also shows up after ⌘U in
+Xcode.
+
+Current coverage: **92.5%** of the app's lines (2,673 / 2,890). The model, the CPU and GPU
+engines, the statistics, the palette and the views are all above 90%. What is left: the delegate
+that quits the app when the last window closes, and mouse gestures on the 3D view, which need
+real events.
 
 ## Project layout
 
@@ -142,6 +163,7 @@ TasDeSable/
   Views/                    main window, panels, histogram, palette
   Localizable.xcstrings     interface texts (French source, English)
 TasDeSableTests/            Swift Testing tests
+scripts/coverage.sh         tests with code coverage
 docs/architecture.md        technical documentation (in French)
 docs/uml/                   StarUML model (tasdesable.mdj) and diagram images
 ```

@@ -113,7 +113,7 @@ open build/Build/Products/Debug/TasDeSable.app --args -demo comparison   # rando
 xcodebuild -project TasDeSable.xcodeproj -scheme TasDeSable -derivedDataPath build test
 ```
 
-19 tests (Swift Testing), qui couvrent :
+30 tests (Swift Testing), qui couvrent :
 - la bascule simple et la perte au bord, la conservation des grains, la stabilité ;
 - plus d'un ajout sur deux sans effet à l'état critique ;
 - l'abélianité : file = pile = aléatoire, CPU = GPU pour 10⁴ et 10⁶ grains, seuil 7, versement
@@ -124,7 +124,28 @@ xcodebuild -project TasDeSable.xcodeproj -scheme TasDeSable -derivedDataPath bui
 - la dimension des grilles de comparaison ;
 - les réglages : valeurs par défaut, bornes, persistance de la langue et de la palette ;
 - la traduction anglaise ;
-- les palettes : 4 niveaux = 4 couleurs, conversion hexadécimale.
+- les palettes : 4 niveaux = 4 couleurs, conversion hexadécimale ;
+- le modèle de simulation : chaque expérience menée jusqu'au bout (ajout, ajout continu, versement
+  et son calcul grain par grain, arrêt de ce calcul, vérification abélienne, tas divisible, quatre
+  tas), réglages appliqués, argument `-demo` ;
+- les vues : chaque écran construit en français et en anglais, vide puis avec des résultats.
+
+### Couverture du code
+
+```bash
+scripts/coverage.sh            # tests + rapport de couverture par fichier
+scripts/coverage.sh --json     # garde aussi le rapport complet dans build/coverage.json
+```
+
+Le script active la couverture (`-enableCodeCoverage YES`, et `gatherCoverageData` dans le schéma
+de `project.yml`), lance les tests, puis affiche le rapport de `xccov` pour l'application. Le
+résultat brut, `build/coverage.xcresult`, s'ouvre dans Xcode (onglet *Coverage*) ; la couverture
+s'affiche aussi après ⌘U dans Xcode.
+
+Couverture actuelle : **92,5 %** des lignes de l'application (2 673 / 2 890). Le modèle, les moteurs
+CPU et GPU, les statistiques, la palette et les vues sont couverts à plus de 90 %. Ce qui ne l'est
+pas : le délégué qui quitte l'application à la fermeture de la dernière fenêtre et les gestes de
+la souris sur la vue 3D, qui demandent de vrais événements.
 
 ## Organisation
 
@@ -138,6 +159,7 @@ TasDeSable/
   Views/                    fenêtre principale, panneaux, palette
   Localizable.xcstrings     textes de l'interface (fr source, en)
 TasDeSableTests/            tests Swift Testing
+scripts/coverage.sh         tests avec couverture du code
 docs/architecture.md        documentation technique
 docs/uml/                   modèle StarUML (tasdesable.mdj) et images des diagrammes
 ```

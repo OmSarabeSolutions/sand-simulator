@@ -52,3 +52,6 @@ schemes:
         TasDeSableTests: [test]
     test:
       targets: [TasDeSableTests]
+      # Couverture du code de l'application (pas celle des tests eux-mêmes)
+      gatherCoverageData: true
+      coverageTargets: [TasDeSable]

@@ -20,6 +20,7 @@
 		881CDB26310C47AABE8F5A34 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9246E6BF6D34810147A8F20F /* SettingsView.swift */; };
 		9B05A08BD2C726A4B2503F87 /* ComparisonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC9EF92940ADA1DD0BFB089 /* ComparisonView.swift */; };
 		9EC345DCFD9EBF3A5FCFBAF3 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431A791AB2A63E6CD87749FB /* AppSettings.swift */; };
+		9EFAC34AED837A61ED6E40E6 /* SimulationModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9241BED3856AA26477BBDCE1 /* SimulationModelTests.swift */; };
 		ABEAED9DA044CFD2DE107992 /* SandpileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC6C3A5821DD5AABE620287 /* SandpileTests.swift */; };
 		B942C2229B406E6680D1679A /* SimulationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC21E5D0915600DF7DC4EA2 /* SimulationModel.swift */; };
 		BF198A00CB1F2D99998D523F /* DivisiblePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D6783E4260B0440D0B8267 /* DivisiblePanel.swift */; };
@@ -57,6 +58,7 @@
 		7496E1E89D1B7383CD62679A /* TasDeSableApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasDeSableApp.swift; sourceTree = "<group>"; };
 		86BC32B00F5BCED7D136A192 /* Render.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Render.metal; sourceTree = "<group>"; };
 		8A257535D6F20308A0C5183F /* TasDeSableTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TasDeSableTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9241BED3856AA26477BBDCE1 /* SimulationModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationModelTests.swift; sourceTree = "<group>"; };
 		9246E6BF6D34810147A8F20F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		997850658918AD596AE0EDD7 /* RandomDropPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomDropPanel.swift; sourceTree = "<group>"; };
 		9C58CB6C1650723E8D12B0FE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				1BC6C3A5821DD5AABE620287 /* SandpileTests.swift */,
+				9241BED3856AA26477BBDCE1 /* SimulationModelTests.swift */,
 			);
 			path = TasDeSableTests;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ABEAED9DA044CFD2DE107992 /* SandpileTests.swift in Sources */,
+				9EFAC34AED837A61ED6E40E6 /* SimulationModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
