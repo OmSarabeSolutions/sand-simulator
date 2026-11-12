@@ -1,0 +1,54 @@
+name: TasDeSable
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    macOS: "15.0"
+  createIntermediateGroups: true
+  developmentLanguage: fr
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    MACOSX_DEPLOYMENT_TARGET: "15.0"
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Manual
+    DEVELOPMENT_TEAM: ""
+targets:
+  TasDeSable:
+    type: application
+    platform: macOS
+    sources: [TasDeSable]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.TasDeSable
+        PRODUCT_NAME: TasDeSable
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Tas de sable
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.education
+        INFOPLIST_KEY_NSHumanReadableCopyright: ""
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        ENABLE_HARDENED_RUNTIME: NO
+        MTL_FAST_MATH: YES
+        # La simulation est inutilisable sans optimisation, même en Debug.
+        SWIFT_OPTIMIZATION_LEVEL: "-O"
+  TasDeSableTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [TasDeSableTests]
+    dependencies:
+      - target: TasDeSable
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.TasDeSableTests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/TasDeSable.app/Contents/MacOS/TasDeSable"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+schemes:
+  TasDeSable:
+    build:
+      targets:
+        TasDeSable: all
+        TasDeSableTests: [test]
+    test:
+      targets: [TasDeSableTests]
