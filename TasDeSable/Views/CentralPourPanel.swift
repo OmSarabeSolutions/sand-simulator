@@ -44,6 +44,42 @@ struct CentralPourPanel: View {
 
             Divider()
 
+            Text("Tailles des avalanches (log-log)").font(.headline)
+            Text("Les mêmes grains, versés un par un au centre sur le CPU : chaque grain déclenche sa propre avalanche.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+            if model.pourStatsTotal > 0 {
+                if model.isComputingPourStats {
+                    ProgressView(value: Double(model.pourStatsDone), total: Double(model.pourStatsTotal)) {
+                        Text("\(model.pourStatsDone, format: .number) / \(model.pourStatsTotal, format: .number) grains")
+                            .font(.caption.monospacedDigit())
+                    }
+                    Button("Arrêter le calcul", systemImage: "stop.fill") { model.cancelPourStats() }
+                        .controlSize(.small)
+                }
+                AvalancheHistogram(stats: model.pourStats)
+                StatRow("Ajouts sans bascule",
+                        Text(model.pourStats.quietFraction, format: .percent.precision(.fractionLength(1))))
+                StatRow("Plus grande avalanche", cellsText(model.pourStats.largestArea))
+                StatRow("Bascules (record)", Text(model.pourStats.largestTopples, format: .number))
+                if let match = model.pourStatsMatchGPU {
+                    Label(match ? "Grille identique à celle du GPU" : "Grille différente de celle du GPU",
+                          systemImage: match ? "checkmark.circle.fill" : "xmark.octagon.fill")
+                        .foregroundStyle(match ? .green : .red)
+                        .font(.callout)
+                } else if !model.isComputingPourStats && model.pourStatsDone < model.pourStatsTotal {
+                    Text("Calcul arrêté : histogramme partiel.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            } else {
+                Text("Versez des grains pour voir l'histogramme.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+
+            Divider()
+
             Text("Propriété abélienne").font(.headline)
             Text("Les mêmes grains, sur une grille vide, stabilisés dans trois ordres : file sur le CPU, ordre aléatoire sur le CPU, toutes les cases à la fois sur le GPU.")
                 .font(.callout)

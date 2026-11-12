@@ -163,3 +163,25 @@ struct RandomDropper: Sendable {
         return avalanches
     }
 }
+
+/// Versement grain par grain sur la case centrale : chaque grain est suivi de sa cascade, ce qui
+/// donne les statistiques d'avalanches du versement central (que le GPU calcule d'un bloc).
+struct CenterDropper: Sendable {
+    private(set) var grid: Grid
+    let threshold: Int
+    private var scratch: ToppleScratch
+
+    init(grid: Grid, threshold: Int) {
+        self.grid = grid
+        self.threshold = threshold
+        self.scratch = ToppleScratch(count: grid.count)
+    }
+
+    /// Verse `count` grains au centre, un par un, et enregistre chaque avalanche dans `stats`.
+    mutating func drop(_ count: Int, into stats: inout AvalancheStats) {
+        let center = grid.centerIndex
+        for _ in 0..<count {
+            stats.record(CPUSandpile.addGrain(at: center, to: &grid, threshold: threshold, scratch: &scratch))
+        }
+    }
+}

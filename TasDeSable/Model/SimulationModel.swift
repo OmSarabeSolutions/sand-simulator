@@ -174,6 +174,14 @@ final class SimulationModel {
     private(set) var pouredGrains = 0
     private(set) var lastPourSeconds: Double?
     private(set) var abelianReport: AbelianReport?
+    /// Avalanches des grains versés un par un au centre (calcul CPU en arrière-plan).
+    private(set) var pourStats = AvalancheStats()
+    /// Grains déjà versés un par un, sur `pourStatsTotal`.
+    private(set) var pourStatsDone = 0
+    private(set) var pourStatsTotal = 0
+    private(set) var isComputingPourStats = false
+    /// Vrai si la grille obtenue grain par grain est identique à celle du GPU (propriété abélienne).
+    private(set) var pourStatsMatchGPU: Bool?
 
     // Tas divisible
     private(set) var masses: [Float]
@@ -187,6 +195,7 @@ final class SimulationModel {
     @ObservationIgnored private var version = 0
     @ObservationIgnored private var task: Task<Void, Never>?
     @ObservationIgnored private var gpuEngine: GPUSandpile?
+    @ObservationIgnored private var pourStatsTask: Task<Void, Never>?
 
     init(settings: AppSettings) {
         self.settings = settings
@@ -218,6 +227,11 @@ final class SimulationModel {
         masses = Array(repeating: 0, count: grid.count)
         stats = AvalancheStats()
         lastAvalanche = nil
+        cancelPourStats()
+        pourStats = AvalancheStats()
+        pourStatsDone = 0
+        pourStatsTotal = 0
+        pourStatsMatchGPU = nil
         pouredGrains = 0
         lastPourSeconds = nil
         abelianReport = nil
@@ -290,6 +304,11 @@ final class SimulationModel {
 
     func resetPour() {
         cancel()
+        cancelPourStats()
+        pourStats = AvalancheStats()
+        pourStatsDone = 0
+        pourStatsTotal = 0
+        pourStatsMatchGPU = nil
         pourGrid = Grid(width: pourGrid.width, height: pourGrid.height)
         pouredGrains = 0
         lastPourSeconds = nil
@@ -318,12 +337,64 @@ final class SimulationModel {
                 pouredGrains += count
                 lastPourSeconds = (ContinuousClock.now - start).seconds
                 publish()
+                startPourStats(base: base, count: count, expected: result)
             } catch is CancellationError {
             } catch {
                 errorMessage = message(for: error)
             }
             state = .idle
         }
+    }
+
+    /// Verse les mêmes grains un par un au centre, sur le CPU et en arrière-plan, pour obtenir les
+    /// avalanches du versement. Les statistiques sont publiées par lots d'environ 100 ms. Une
+    /// nouvelle série remplace la précédente ; à la fin, la grille est comparée à celle du GPU.
+    private func startPourStats(base: Grid, count: Int, expected: Grid) {
+        cancelPourStats()
+        if base.isEmpty || pourStatsDone != pourStatsTotal {
+            pourStats = AvalancheStats()          // nouvelle série, ou série précédente incomplète
+            pourStatsDone = 0
+            pourStatsTotal = 0
+        }
+        let previousDone = pourStatsDone
+        pourStatsTotal += count
+        pourStatsMatchGPU = nil
+        isComputingPourStats = true
+        let threshold = threshold
+        pourStatsTask = Task {
+            var dropper = CenterDropper(grid: base, threshold: threshold)
+            var done = 0
+            var chunk = 500
+            while done < count && !Task.isCancelled {
+                let n = min(chunk, count - done)
+                let input = dropper
+                let start = ContinuousClock.now
+                let (output, partial) = await Task.detached(priority: .utility) {
+                    var working = input
+                    var batch = AvalancheStats()
+                    working.drop(n, into: &batch)
+                    return (working, batch)
+                }.value
+                guard !Task.isCancelled else { return }
+                dropper = output
+                pourStats.merge(partial)
+                done += n
+                pourStatsDone = previousDone + done
+                let elapsed = (ContinuousClock.now - start).seconds
+                chunk = max(1, min(1_000_000, Int(Double(n) * 0.1 / max(elapsed, 1e-4))))
+            }
+            if done == count {
+                pourStatsMatchGPU = dropper.grid == expected
+            }
+            isComputingPourStats = false
+        }
+    }
+
+    /// Arrête le versement grain par grain en cours ; les statistiques déjà obtenues restent affichées.
+    func cancelPourStats() {
+        pourStatsTask?.cancel()
+        pourStatsTask = nil
+        isComputingPourStats = false
     }
 
     /// Stabilise les mêmes grains au centre de trois façons et compare les résultats case par case.

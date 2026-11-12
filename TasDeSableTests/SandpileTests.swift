@@ -46,6 +46,42 @@ struct CPUSandpileTests {
         #expect(!stats.histogram.isEmpty)
     }
 
+    @Test("Versement grain par grain au centre = relaxation d'un bloc, et statistiques par lots = un seul lot")
+    func centerDropper() async throws {
+        var initial = Grid(width: 48, height: 48)
+        initial.cells[initial.centerIndex] = 20_000
+        let direct = try await CPUSandpile().relax(initial, threshold: 4)
+
+        var oneByOne = CenterDropper(grid: Grid(width: 48, height: 48), threshold: 4)
+        var whole = AvalancheStats()
+        oneByOne.drop(20_000, into: &whole)
+        #expect(oneByOne.grid == direct)
+        #expect(whole.drops == 20_000)
+        #expect(whole.quietFraction > 0 && whole.quietFraction < 1)
+
+        var batched = CenterDropper(grid: Grid(width: 48, height: 48), threshold: 4)
+        var merged = AvalancheStats()
+        for _ in 0..<4 {
+            var part = AvalancheStats()
+            batched.drop(5_000, into: &part)
+            merged.merge(part)
+        }
+        #expect(batched.grid == direct)
+        #expect(merged.drops == whole.drops && merged.quietDrops == whole.quietDrops)
+        #expect(merged.totalTopples == whole.totalTopples && merged.bins == whole.bins)
+        #expect(merged.largestArea == whole.largestArea)
+    }
+
+    @Test("Graduations en puissances de 10")
+    func powersOfTen() {
+        #expect(AvalancheHistogram.powerOfTen(0) == "10⁰")
+        #expect(AvalancheHistogram.powerOfTen(3) == "10³")
+        #expect(AvalancheHistogram.powerOfTen(12) == "10¹²")
+        #expect(AvalancheHistogram.powerOfTen(-2) == "10⁻²")
+        #expect(AvalancheHistogram.decades(from: 2e-7, to: 0.3) == Array(-7...0))
+        #expect(AvalancheHistogram.decades(from: 1e-3, to: 1e-2) == [-3, -2])
+    }
+
     @Test("L'ordre des bascules ne change pas le résultat", arguments: [4, 7])
     func randomOrderMatchesStack(threshold: Int) async throws {
         var initial = Grid(width: 48, height: 48)
@@ -137,21 +173,20 @@ struct GPUSandpileTests {
 @Suite("Réglages")
 @MainActor
 struct AppSettingsTests {
-    private func freshDefaults() -> UserDefaults {
-        let name = "TasDeSableTests.\(UUID().uuidString)"
-        let defaults = UserDefaults(suiteName: name)!
-        defaults.removePersistentDomain(forName: name)
-        return defaults
+    /// Un stockage vide, sans repli sur les préférences de l'application hôte.
+    private func freshDefaults() -> MemorySettingsStore {
+        MemorySettingsStore()
     }
 
     @Test("Valeurs par défaut")
     func defaults() {
         let settings = AppSettings(defaults: freshDefaults())
-        #expect(settings.gridWidth == 64)
-        #expect(settings.gridHeight == 64)
-        #expect(settings.threshold == 4)
-        #expect(settings.displayMode == .heightAndColor)
-        #expect(settings.pourAmount == 1_000)
+        #expect(settings.gridWidth == AppSettings.defaultSide)
+        #expect(settings.gridHeight == AppSettings.defaultSide)
+        #expect(settings.threshold == AppSettings.defaultThreshold)
+        #expect(settings.displayMode == AppSettings.defaultDisplayMode)
+        #expect(settings.pourAmount == AppSettings.defaultPourAmount)
+        #expect(settings.palette == AppSettings.defaultPalette)
     }
 
     @Test("Les valeurs sont bornées et relues")
@@ -176,8 +211,8 @@ struct AppSettingsTests {
     func languageAndPalette() {
         let defaults = freshDefaults()
         let settings = AppSettings(defaults: defaults)
-        #expect(settings.palette == .sand)
-        #expect(settings.paletteColors.map(\.hex) == [0x2B2722, 0x634731, 0x644835, 0xD1B58C])
+        settings.palette = .sand
+        #expect(settings.paletteColors.map(\.hex) == CellPalette.sandColors)
         settings.language = .en
         settings.palette = .custom
         settings.customColors = [0x000000, 0x112233, 0x445566, 0xFFFFFF]

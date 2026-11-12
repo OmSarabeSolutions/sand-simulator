@@ -88,7 +88,7 @@ CLASS_DIAGRAMS = [
      'members': True, 'rankdir': 'TB'},
     {'name': '11 · Classes — grille et moteurs de bascule', 'package': 'Model',
      'classes': ['Grid', 'SandpileEngine', 'CPUSandpile', 'GPUSandpile', 'ToppleOrder', 'ToppleScratch',
-                 'Avalanche', 'RandomDropper', 'ToppleParams', 'DivisibleParams', 'GPUSandpileError',
+                 'Avalanche', 'RandomDropper', 'CenterDropper', 'ToppleParams', 'DivisibleParams', 'GPUSandpileError',
                  'SandpileShaders', 'SandpileShaders.ToppleParams', 'SandpileShaders.DivisibleParams'],
      'doc': 'La grille, les deux moteurs qui la stabilisent (CPU exact, GPU parallèle), les kernels de Sandpile.metal et les structures partagées avec Swift.',
      'members': True, 'rankdir': 'TB'},
@@ -104,7 +104,8 @@ CLASS_DIAGRAMS = [
      'members': True, 'rankdir': 'TB'},
     {'name': '14 · Classes — vues SwiftUI', 'package': 'Views',
      'classes': ['ContentView', 'SimulationCanvas', 'RandomDropPanel', 'CentralPourPanel', 'DivisiblePanel',
-                 'DiscOverlay', 'ComparisonView', 'StatRow', 'Palette', 'PaletteLegend', 'PaletteSwatch'],
+                 'DiscOverlay', 'ComparisonView', 'StatRow', 'Palette', 'PaletteLegend', 'PaletteSwatch',
+                 'AvalancheHistogram'],
      'doc': 'La fenêtre principale, les panneaux des quatre expériences et la palette partagée avec le shader.',
      'members': False, 'rankdir': 'LR'},
 ]

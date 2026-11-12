@@ -87,9 +87,10 @@ SCENARIOS_TASDESABLE = [
      ]},
     {'name': '42 · Séquence — versement central sur GPU',
      'doc': 'N grains posés au centre, puis rondes parallèles jusqu’à stabilité ; ajoutés aux grains déjà là '
-            'par la propriété abélienne.',
+            'par la propriété abélienne. En arrière-plan, les mêmes grains sont versés un par un sur le CPU '
+            'pour l’histogramme des avalanches.',
      'lifelines': {'u': ('', 'Utilisateur'), 'm': ('', 'SimulationModel'), 'g': ('', 'GPUSandpile'),
-                   'k': ('', 'SandpileShaders'), 'r': ('', 'SandpileRenderer')},
+                   'k': ('', 'SandpileShaders'), 'r': ('', 'SandpileRenderer'), 'cd': ('', 'CenterDropper')},
      'steps': [
          ('call', 'u', 'm', 'pourCenter()'),
          ('call', 'm', 'g', 'pourCenter(count, width, height, threshold)'),
@@ -102,6 +103,13 @@ SCENARIOS_TASDESABLE = [
          ('opt', '[grille déjà non vide]', [('call', 'm', 'g', 'relax(grid, threshold)')]),
          ('self', 'm', 'publish()'),
          ('call', 'm', 'r', 'update(snapshot, displayMode)'),
+         ('self', 'm', 'startPourStats(base, count, expected)'),
+         ('loop', '[lots d’environ 100 ms, jusqu’à N grains]', [
+             ('async', 'm', 'cd', 'Task.detached { drop(n, into: stats) }'),
+             ('reply', 'cd', 'm', 'AvalancheStats du lot'),
+             ('self', 'm', 'pourStats.merge(partial)'),
+         ]),
+         ('self', 'm', 'pourStatsMatchGPU = (grille CPU == grille GPU)'),
      ]},
     {'name': '43 · Séquence — vérification abélienne',
      'doc': 'Les mêmes grains stabilisés en file (CPU), en ordre aléatoire (CPU) et en parallèle (GPU).',

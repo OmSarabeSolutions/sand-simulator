@@ -1,4 +1,3 @@
-import Charts
 import SwiftUI
 
 /// Ajout lent de grains au hasard et statistiques des avalanches (criticalité auto-organisée).
@@ -56,17 +55,7 @@ struct RandomDropPanel: View {
 
             Text("Tailles des avalanches (log-log)").font(.headline)
             if stats.histogram.count >= 2 {
-                Chart(stats.histogram) { bin in
-                    LineMark(x: .value("Bascules", bin.size), y: .value("Fréquence", bin.frequency))
-                        .foregroundStyle(.teal)
-                    PointMark(x: .value("Bascules", bin.size), y: .value("Fréquence", bin.frequency))
-                        .foregroundStyle(.teal)
-                }
-                .chartXScale(type: .log)
-                .chartYScale(type: .log)
-                .chartXAxisLabel("bascules par avalanche")
-                .chartYAxisLabel("fréquence")
-                .frame(height: 200)
+                AvalancheHistogram(stats: stats)
                 Text("À l'état critique, les points s'alignent : la loi de taille est une loi de puissance.")
                     .font(.caption)
                     .foregroundStyle(.secondary)

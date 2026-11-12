@@ -31,7 +31,7 @@ petites zones.
 | Expérience | Ce qu'elle montre | Calcul |
 |---|---|---|
 | **Ajout aléatoire** | Grains ajoutés un à un au hasard (+1, +100, +10 000 ou en continu). Part des ajouts sans effet, avalanches record, histogramme log-log des tailles. | CPU, exact grain par grain |
-| **Versement central** | N grains posés au centre, motifs fractals. Bouton **Vérifier** : mêmes grains stabilisés en file, en ordre aléatoire et en parallèle, trois résultats identiques case par case. | GPU (Metal compute) et CPU |
+| **Versement central** | N grains posés au centre, motifs fractals. En arrière-plan, les mêmes grains sont versés un par un sur le CPU pour obtenir l'histogramme log-log de leurs avalanches ; la grille obtenue est comparée à celle du GPU. Bouton **Vérifier** : mêmes grains stabilisés en file, en ordre aléatoire et en parallèle, trois résultats identiques case par case. | GPU (Metal compute) et CPU |
 | **Tas divisible** | La masse est partagée au lieu de rester en grains : les cases pleines forment presque le disque d'aire N. | GPU |
 | **Quatre tas** | N, 10 N, 100 N et 1 000 N grains, chacun sur une grille assez grande pour ne rien perdre, affichés dans le même cadre. | GPU |
 
@@ -47,12 +47,12 @@ Menu **TasDeSable › Réglages…** (⌘,) ou bouton engrenage de la barre d'ou
 
 | Réglage | Plage | Défaut | Effet |
 |---|---|---|---|
-| Taille de la grille (largeur × hauteur) | 8 à 1 024 par côté | 64 × 64 | Appliquée avec **Appliquer et réinitialiser** (confirmation si des résultats existent) |
+| Taille de la grille (largeur × hauteur) | 8 à 1 024 par côté | 512 × 512 | Appliquée avec **Appliquer et réinitialiser** (confirmation si des résultats existent) |
 | Grains par case (seuil T) | 4 à 10 | 4 | Idem |
 | Langue | Français, English | Langue du système (anglais si c'est la première langue, sinon français) | Immédiat, sans relancer l'application |
 | Affichage | Hauteur + couleur, ou couleur seule | Hauteur + couleur | Immédiat ; la couleur seule passe en vue de dessus |
 | Palette | Sable, Classique, Personnalisée | Sable | Immédiat ; la palette personnalisée a 4 sélecteurs de couleur |
-| Grains à déverser | 1 à 10 000 000 | 1 000 | Immédiat ; utilisé par le versement central, le tas divisible et les quatre tas |
+| Grains à déverser | 1 à 10 000 000 | 1 000 000 | Immédiat ; utilisé par le versement central, le tas divisible et les quatre tas |
 
 **Règle avec un seuil T** : une case qui porte T grains ou plus bascule, perd 4 grains et en donne
 un à chacune de ses quatre voisines. Pour T = 4, c'est le modèle de Bak, Tang et Wiesenfeld ; pour
@@ -65,7 +65,7 @@ mélange de la 1re et de la 2e une case partielle, et la 4e une case pleine.
 
 | Palette | 0 | 1 | 2 | 3 |
 |---|---|---|---|---|
-| Sable | `#2B2722` | `#634731` | `#644835` | `#D1B58C` |
+| Sable | `#2B2722` | `#634731` | `#BB8665` | `#D1B58C` |
 | Classique | `#1A295A` | `#1A8C99` | `#F2C740` | `#D94033` |
 | Personnalisée | au choix | au choix | au choix | au choix |
 
@@ -111,10 +111,13 @@ open build/Build/Products/Debug/TasDeSable.app --args -demo comparison   # rando
 xcodebuild -project TasDeSable.xcodeproj -scheme TasDeSable -derivedDataPath build test
 ```
 
-17 tests (Swift Testing), qui couvrent :
+19 tests (Swift Testing), qui couvrent :
 - la bascule simple et la perte au bord, la conservation des grains, la stabilité ;
 - plus d'un ajout sur deux sans effet à l'état critique ;
-- l'abélianité : file = pile = aléatoire, CPU = GPU pour 10⁴ et 10⁶ grains, seuil 7 ;
+- l'abélianité : file = pile = aléatoire, CPU = GPU pour 10⁴ et 10⁶ grains, seuil 7, versement
+  grain par grain au centre = versement d'un bloc ;
+- la fusion des statistiques calculées par lots ;
+- les graduations des axes en puissances de 10 ;
 - le tas divisible : masse conservée, disque d'aire N ;
 - la dimension des grilles de comparaison ;
 - les réglages : valeurs par défaut, bornes, persistance de la langue et de la palette ;

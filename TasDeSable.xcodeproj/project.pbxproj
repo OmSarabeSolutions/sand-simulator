@@ -10,6 +10,7 @@
 		0FA3C15A39B87E5119DEEE7B /* RandomDropPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997850658918AD596AE0EDD7 /* RandomDropPanel.swift */; };
 		2380541E50CDF96215A5AFDF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C58CB6C1650723E8D12B0FE /* ContentView.swift */; };
 		396DDD2ACA88DAE11E786528 /* Render.metal in Sources */ = {isa = PBXBuildFile; fileRef = 86BC32B00F5BCED7D136A192 /* Render.metal */; };
+		462764BE8B3B62C30621CC25 /* AvalancheHistogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E24D067FC70180B59E7930 /* AvalancheHistogram.swift */; };
 		582AEA90C9267DADA02A5A1D /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAF676FCBC365949840CCB6 /* Palette.swift */; };
 		61786DB57D82862A9A02A4AF /* TasDeSableApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7496E1E89D1B7383CD62679A /* TasDeSableApp.swift */; };
 		6436AB330394C27417995833 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE72537490F75AEB9885F11 /* MetalView.swift */; };
@@ -60,6 +61,7 @@
 		997850658918AD596AE0EDD7 /* RandomDropPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomDropPanel.swift; sourceTree = "<group>"; };
 		9C58CB6C1650723E8D12B0FE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9EE72537490F75AEB9885F11 /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
+		B7E24D067FC70180B59E7930 /* AvalancheHistogram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvalancheHistogram.swift; sourceTree = "<group>"; };
 		BAC21E5D0915600DF7DC4EA2 /* SimulationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationModel.swift; sourceTree = "<group>"; };
 		FE75A715B67BF46D47EA27BE /* TasDeSable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TasDeSable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -139,6 +141,7 @@
 		D55C9A11F9188AE5644CB5CC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B7E24D067FC70180B59E7930 /* AvalancheHistogram.swift */,
 				26AAC40050181A613F082222 /* CentralPourPanel.swift */,
 				5EC9EF92940ADA1DD0BFB089 /* ComparisonView.swift */,
 				9C58CB6C1650723E8D12B0FE /* ContentView.swift */,
@@ -253,6 +256,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9EC345DCFD9EBF3A5FCFBAF3 /* AppSettings.swift in Sources */,
+				462764BE8B3B62C30621CC25 /* AvalancheHistogram.swift in Sources */,
 				F5CF3C4BE015DCC48E5F9973 /* AvalancheStats.swift in Sources */,
 				C00129552A94EBFA5E1607B9 /* CPUSandpile.swift in Sources */,
 				7EAE3A48244F4A1E23C719BF /* CentralPourPanel.swift in Sources */,

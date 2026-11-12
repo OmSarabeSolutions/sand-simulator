@@ -70,7 +70,7 @@ enum CellPalette: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
-    static let sandColors: [UInt32] = [0x2B2722, 0x634731, 0x644835, 0xD1B58C]
+    static let sandColors: [UInt32] = [0x2B2722, 0x634731, 0xbb8665, 0xD1B58C]
     static let classicColors: [UInt32] = [0x1A295A, 0x1A8C99, 0xF2C740, 0xD94033]
 }
 
@@ -87,6 +87,25 @@ extension SIMD3 where Scalar == Float {
     }
 }
 
+/// Stockage des réglages : `UserDefaults` dans l'application, un dictionnaire en mémoire dans les
+/// tests (un `UserDefaults(suiteName:)` lirait aussi, par repli, les préférences de l'application).
+protocol SettingsStore: AnyObject {
+    func object(forKey key: String) -> Any?
+    func set(_ value: Any?, forKey key: String)
+}
+
+extension UserDefaults: SettingsStore {}
+
+/// Stockage en mémoire, sans aucun repli.
+final class MemorySettingsStore: SettingsStore {
+    private var values: [String: Any] = [:]
+
+    init() {}
+
+    func object(forKey key: String) -> Any? { values[key] }
+    func set(_ value: Any?, forKey key: String) { values[key] = value }
+}
+
 /// Réglages de l'application, conservés dans `UserDefaults`.
 ///
 /// La taille de la grille et le seuil ne sont modifiés que par `SettingsView`, au moment où
@@ -97,13 +116,13 @@ final class AppSettings {
     static let sideRange = 8...1024
     static let thresholdRange = 4...10
     static let pourRange = 1...10_000_000
-    static let sizePresets = [32, 64, 128, 256, 512]
-    static let pourPresets = [1_000, 10_000, 100_000, 1_000_000]
+    static let sizePresets = [32, 64, 128, 256, 512, 1024]
+    static let pourPresets = [1_000, 10_000, 100_000, 1_000_000, 2_000_000]
 
-    static let defaultSide = 64
+    static let defaultSide = 512
     static let defaultThreshold = 4
     static let defaultDisplayMode = DisplayMode.heightAndColor
-    static let defaultPourAmount = 1_000
+    static let defaultPourAmount = 1_000_000
     static let defaultPalette = CellPalette.sand
 
     private enum Key {
@@ -143,24 +162,27 @@ final class AppSettings {
         return hex.map { SIMD3<Float>(hex: $0) }
     }
 
-    @ObservationIgnored private let defaults: UserDefaults
+    @ObservationIgnored private let defaults: any SettingsStore
 
-    init(defaults: UserDefaults = .standard) {
+    init(defaults: any SettingsStore = UserDefaults.standard) {
         self.defaults = defaults
         func integer(_ key: String, _ fallback: Int, _ range: ClosedRange<Int>) -> Int {
-            guard defaults.object(forKey: key) != nil else { return fallback }
-            return Self.clamp(defaults.integer(forKey: key), to: range)
+            // Un argument de lancement (-grid.width 64) arrive sous forme de texte.
+            let raw = defaults.object(forKey: key)
+            guard let value = raw as? Int ?? (raw as? String).flatMap({ Int($0) }) else { return fallback }
+            return Self.clamp(value, to: range)
         }
+        func string(_ key: String) -> String? { defaults.object(forKey: key) as? String }
         gridWidth = integer(Key.width, Self.defaultSide, Self.sideRange)
         gridHeight = integer(Key.height, Self.defaultSide, Self.sideRange)
         threshold = integer(Key.threshold, Self.defaultThreshold, Self.thresholdRange)
         pourAmount = integer(Key.pourAmount, Self.defaultPourAmount, Self.pourRange)
-        displayMode = defaults.string(forKey: Key.displayMode).flatMap(DisplayMode.init(rawValue:))
+        displayMode = string(Key.displayMode).flatMap(DisplayMode.init(rawValue:))
             ?? Self.defaultDisplayMode
-        language = defaults.string(forKey: Key.language).flatMap(AppLanguage.init(rawValue:))
+        language = string(Key.language).flatMap(AppLanguage.init(rawValue:))
             ?? AppLanguage.systemDefault
-        palette = defaults.string(forKey: Key.palette).flatMap(CellPalette.init(rawValue:)) ?? Self.defaultPalette
-        let stored = (defaults.array(forKey: Key.customColors) as? [Int])?.map { UInt32(clamping: $0) & 0xFFFFFF }
+        palette = string(Key.palette).flatMap(CellPalette.init(rawValue:)) ?? Self.defaultPalette
+        let stored = (defaults.object(forKey: Key.customColors) as? [Int])?.map { UInt32(clamping: $0) & 0xFFFFFF }
         customColors = stored?.count == 4 ? stored! : CellPalette.classicColors
     }
 

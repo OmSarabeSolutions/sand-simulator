@@ -88,6 +88,27 @@ avalanches de taille `s ∈ [2^b, 2^(b+1))`. `histogram` renvoie la fréquence p
 (nombre / 2^b / nombre d'ajouts), à la moyenne géométrique de la classe. Sur des axes log-log, la
 loi de puissance de l'état critique donne une droite, coupée par la taille finie de la grille.
 
+Le graphe (`AvalancheHistogram`, partagé par l'ajout aléatoire et le versement central) trace ces
+fréquences en log-log. Les deux axes sont gradués en puissances de 10 (10⁰, 10¹… et 10⁻¹, 10⁻²…),
+avec une ligne par décade. L'axe des x va jusqu'à la décade qui contient la plus grande avalanche,
+celui des y couvre les décades des fréquences observées (`decades(from:to:)`). Au-delà de 8 décades,
+seule une étiquette sur deux est affichée.
+
+**Avalanches du versement central** : le GPU stabilise N grains d'un bloc, sans avalanches
+individuelles. Pour l'histogramme, `SimulationModel` verse donc *aussi* les mêmes grains un par un
+au centre, sur le CPU (`CenterDropper`) :
+- le calcul tourne dans une tâche détachée de faible priorité, par lots d'environ 100 ms ;
+- chaque lot renvoie ses `AvalancheStats`, fusionnées par `merge` et publiées au fur et à mesure,
+  avec une barre de progression et un bouton d'arrêt ;
+- le calcul est annulé par **Vider**, par un nouveau réglage de grille ou par un nouveau
+  versement ; ce dernier poursuit la série si la précédente était complète ;
+- à la fin, la grille obtenue grain par grain est comparée à celle du GPU. Elles doivent être
+  identiques (propriété abélienne).
+
+Le nombre total de bascules ne dépend pas de l'ordre. Il croît pourtant à peu près comme N², parce
+qu'un grain versé tard traverse tout le tas. Sur 512 × 512, 10⁶ grains demandent environ une
+minute, contre 1,3 s pour le GPU.
+
 ### GPU parallèle (`GPUSandpile`, kernel `topple`)
 
 À chaque ronde, toutes les cases basculent en même temps, un fil par case :
@@ -203,7 +224,7 @@ copie de la grille, que le modèle reprend sur le thread principal.
   le traduire. Les pluriels courts sont choisis dans le code (`cellsText`, `topplesText`).
 
 **Palettes** :
-- `CellPalette` propose `sand` (Sable : `#2B2722`, `#634731`, `#644835`, `#D1B58C`), `classic`
+- `CellPalette` propose `sand` (Sable : `#2B2722`, `#634731`, `#BB8665`, `#D1B58C`), `classic`
   (Classique : les couleurs d'origine) et `custom`.
 - La palette Personnalisée a quatre couleurs `0xRRGGBB`, conservées dans `UserDefaults` et éditées
   par des `ColorPicker`.
@@ -211,9 +232,18 @@ copie de la grille, que le modèle reprend sur le thread principal.
   passe à `MetalView`, et de là au renderer (uniforme `palette`), ainsi qu'à `Palette`, qui produit
   la légende et les images vues de dessus.
 
+## Cycle de vie
+
+L'application se termine quand sa dernière fenêtre est fermée. `AppDelegate`, branché par
+`@NSApplicationDelegateAdaptor`, répond `true` à `applicationShouldTerminateAfterLastWindowClosed`.
+Comme SwiftUI garde des fenêtres internes, il observe aussi `NSWindow.willCloseNotification` et
+appelle `NSApp.terminate` quand il ne reste plus de fenêtre visible (principale ou réglages).
+
 ## Réglages
 
-`AppSettings` lit `UserDefaults` (clés `grid.width`, `grid.height`, `grid.threshold`,
+`AppSettings` lit un `SettingsStore` : `UserDefaults` dans l'application, `MemorySettingsStore`
+dans les tests (un `UserDefaults(suiteName:)` retomberait sur les préférences de l'app hôte). Il lit
+les clés `grid.width`, `grid.height`, `grid.threshold`,
 `display.mode`, `pour.amount`) et borne chaque valeur à sa plage. `SettingsView` édite la taille et
 le seuil dans un brouillon (`@State`). **Appliquer et réinitialiser** les enregistre puis appelle
 `SimulationModel.applyGridSettings()`, qui recrée les grilles et remet les résultats à zéro. Une

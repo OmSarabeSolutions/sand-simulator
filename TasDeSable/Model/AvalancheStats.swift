@@ -39,6 +39,17 @@ struct AvalancheStats: Sendable {
         for avalanche in avalanches { record(avalanche) }
     }
 
+    /// Ajoute les statistiques d'un autre lot d'ajouts.
+    mutating func merge(_ other: AvalancheStats) {
+        drops += other.drops
+        quietDrops += other.quietDrops
+        largestArea = max(largestArea, other.largestArea)
+        largestTopples = max(largestTopples, other.largestTopples)
+        lostGrains += other.lostGrains
+        totalTopples += other.totalTopples
+        for i in bins.indices { bins[i] += other.bins[i] }
+    }
+
     /// Part des ajouts qui ne font basculer aucune case.
     var quietFraction: Double { drops == 0 ? 0 : Double(quietDrops) / Double(drops) }
 
